@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 use Mailgun\Mailgun;
 
-$to = "jkdubr@me.com";
+$to = "a.studenic@gmail..com";
 $subject = "support";
 $from = $_GET["mail"];
 $message = $_GET["message"] . "\n\n" . print_r($_GET, true);
