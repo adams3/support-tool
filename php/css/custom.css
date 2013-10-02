@@ -1,1 +1,9 @@
 div.has-error {color:#b94a48}
+
+.no-pl {padding-left: 0;}
+.input-new {padding-left: 4px; padding-right: 4px;}
+
+div.add {margin: 15px 0 0 0;}
+div.row {margin: 0;}
+div.well-new { background-color: #EEEEEE;}
+div.well-new-2 {padding:10px;}
