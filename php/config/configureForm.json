@@ -1,5 +1,1 @@
-
-{
-    "login": "admin",
-    "password" : "admin"
-}
+{"form":"{\"1\":{\"name\":\"\",\"label\":\"\",\"type\":\"text\",\"placeholder\":\"\",\"ID\":\"\",\"class\":\"\"},\"2\":{\"name\":\"\",\"label\":\"\",\"type\":\"text\",\"placeholder\":\"\",\"ID\":\"\",\"class\":\"\"},\"3\":{\"name\":\"\",\"label\":\"\",\"type\":\"text\",\"placeholder\":\"\",\"ID\":\"\",\"class\":\"\"},\"4\":{\"name\":\"\",\"label\":\"\",\"type\":\"text\",\"placeholder\":\"\",\"ID\":\"\",\"class\":\"\"}}"}

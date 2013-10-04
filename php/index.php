@@ -4,7 +4,7 @@ $configFile = "config/configure.json";
 $json = json_decode(file_get_contents($configFile), true);
 session_start();
 
-if ($_SESSION["login"] == $json["login"]) {
+if ($_SESSION["login"] == $json["admin"]["login"]) {
     header("location:main.php");
 }
 ?>
@@ -31,9 +31,11 @@ if ($_SESSION["login"] == $json["login"]) {
 
     <form name="form1" class="form-signin" method="post" action="main.php">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <?php
+<?php
     if($_GET["success"]=="false"){
-        echo "<div class='has-error'>Log in was not successful</div>";
+        echo "<div class='alert alert-danger'>Log in was not successful</div>";
+    } elseif ($_GET["success"]=="true") {
+        echo "<div class='alert alert-success'>Logout was successful</div>";
     }
 ?>
 

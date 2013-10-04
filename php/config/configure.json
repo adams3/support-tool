@@ -1,5 +1,4 @@
-
-{
-    "login": "admin",
-    "password" : "admin"
+"admin" : {
+    "login":"admin",
+    "password" "admin"
 }
