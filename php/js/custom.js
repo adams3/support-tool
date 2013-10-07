@@ -3,6 +3,28 @@ var lastRowNumber = 0;
 
 $(function(){
 
+
+    $.getJSON( "config/configureForm.json", function( data ) {
+        var parsed = $.parseJSON(data.form);
+        for (var index in parsed) {
+            $('input').each(function(){
+                if ($(this).attr('name') == index) {
+                    $(this).val(parsed[index]);
+                }
+            });
+        }
+
+        var rows = parsed['row'];
+
+        for (var index in rows) {
+            console.log(index);
+            //generovat radky kodu
+        }
+
+
+
+    });
+
     cloneRow(lastRowNumber + 1);
 
     $('#addNew').click(function(e){
@@ -28,19 +50,19 @@ $(function(){
 
         $.post('save-form.php', sendArray, function(data){
             parsed = $.parseJSON(data.form);
+            var rows = parsed['row'];
 
             var $exampleDiv = $('<div id="sp-modal" tabindex="-1" class="display-none" aria-labelledby="myModalLabel" aria-hidden="true"><button id="goBack" onclick="toggleBack()" class="btn btn-primary" type="button">Back to form config</button><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></div><div class="modal-body"></div></div></div></div>');
             $('div.well-new').append($exampleDiv);
 
-            var $header = $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Message us</h4>');
-            var $form = $('<form role="form" action="submit.php" id="sp-support-form">');
+            var $header = $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">'+parsed['form-action']+'</h4>');
+            var $form = $('<form role="form" action='+ parsed['url'] +' id="sp-support-form">');
 
             $('div.modal-header').append($header);
             $('div.modal-body').append($form);
 
-
-            for(var i = 1; i <= Object.keys(parsed).length; i++){
-                var row = parsed[i];
+            for(var index in rows) {
+                var row = rows[index];
                 var $div = $('<div class="form-group"></div>');
                 var $input = null;
 

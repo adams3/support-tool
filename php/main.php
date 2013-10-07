@@ -91,7 +91,37 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
             </div>
             <div class="well well-new">
                 <form id="supportForm" class="form-horizontal" name="config-form" role="form" action="save-form.php" method="post">
+                    <div class="add mt15">
+                        <div class=" no-pl">
+
+                        </div>
+                    </div>
                     <div id="rows">
+                        <div class="row well well-new-2">
+                            <div class="col-sm-6 no-pl">
+                                <label for="formActionInput">Form action</label>
+                                <input name="form-action" type="text" class="form-control input-new" id="formActionInput" placeholder="Message us">
+                            </div>
+                            <div class="col-sm-6 no-pl">
+                                <label for="sendFormTo">Send form to</label>
+                                <input name="send-to" type="text" class="form-control input-new" id="sendFormTo" placeholder="example@me.com">
+                            </div>
+                        </div>
+                        <div class="row well well-new-2">
+                            <div class="col-sm-6 no-pl">
+                                <label for="directUrl">URL where to direct the form</label>
+                                <input name="url" type="text" class="form-control input-new" id="directUrl" placeholder="http://www.example.com/submit.php">
+                            </div>
+
+                            <div class="col-sm-6 no-pl">
+                                <label for="phone">Phone no.</label>
+                                <input name="phone" type="text" class="form-control input-new" id="phone" placeholder="+421 902 308 767">
+                            </div>
+                            <div class="col-sm-6 no-pl">
+                                <label for="skype">Skype name</label>
+                                <input name="skype" type="text" class="form-control input-new" id="skype" placeholder="Skype nickname">
+                            </div>
+                        </div>
                         <div class="row well well-new-2">
                             <div class="col-sm-2 no-pl">
                                 <label>Name</label>
