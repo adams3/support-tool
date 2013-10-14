@@ -90,10 +90,14 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                 </p>-->
             </div>
             <div class="well well-new">
-                <form id="supportForm" class="form-horizontal" name="config-form" role="form" action="save-form.php" method="post">
-                    <div class="add mt15">
-                        <div class=" no-pl">
 
+
+
+                <form id="supportForm" class="form-horizontal" name="config-form" role="form" action="save-form.php" method="post">
+                    <div class="center">
+                        <div class=" col-md-12 no-pl">
+                            <input id="reset" type="reset" class="btn btn-danger" value="Reset Form To Default Values">
+                            <button id="goBack" class="btn btn-primary display-none" >Go back</button>
                         </div>
                     </div>
                     <div id="rows">
@@ -106,8 +110,8 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                                 <label for="sendFormTo">Send form to</label>
                                 <input name="send-to" type="text" class="form-control input-new" id="sendFormTo" placeholder="example@me.com">
                             </div>
-                        </div>
-                        <div class="row well well-new-2">
+                            <!--                        </div>
+                                                    <div class="row well well-new-2">-->
                             <div class="col-sm-6 no-pl">
                                 <label for="directUrl">URL where to direct the form</label>
                                 <input name="url" type="text" class="form-control input-new" id="directUrl" placeholder="http://www.example.com/submit.php">
@@ -122,6 +126,7 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                                 <input name="skype" type="text" class="form-control input-new" id="skype" placeholder="Skype nickname">
                             </div>
                         </div>
+                        <br>
                         <div class="row well well-new-2">
                             <div class="col-sm-2 no-pl">
                                 <label>Name</label>
@@ -136,7 +141,7 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                                 <label>Placeholder</label>
                             </div>
                             <div class="col-sm-1 no-pl">
-                                <label>ID</label>
+                                <label>Id</label>
                             </div>
                             <div class="col-sm-1 no-pl">
                                 <label>Class</label>
@@ -148,35 +153,35 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                                 <label>Action</label>
                             </div>
                         </div>
-                        <div id="0" class="row well well-new-2 display-none">
+                        <div id="row0" class="row well well-new-2 display-none">
                             <div class="col-sm-2 no-pl">
                                 <label class="sr-only" for="nameInput">Name</label>
-                                <input name="name" type="name" class="form-control input-new" id="nameInput" placeholder="Name">
+                                <input name="name" type="name" class="form-control input-new" id="nameInput" placeholder="Name" data-hd-type="name">
                             </div>
                             <div class=" col-sm-2 no-pl">
                                 <label class="sr-only" for="labelInput">Label</label>
-                                <input name="label" type="text" class="form-control input-new" id="labelInput" placeholder="Label">
+                                <input name="label" type="text" class="form-control input-new" id="labelInput" placeholder="Label" data-hd-type="label">
                             </div>
                             <div class=" col-sm-2 no-pl">
-                                <select name="type" class="form-control input-new">
-                                    <option>text</option>
-                                    <option>email</option>
-                                    <option>checkbox</option>
-                                    <option>textarea</option>
-                                    <option>password</option>
+                                <select name="type" class="form-control input-new" data-hd-type="type">
+                                    <option value="text">text</option>
+                                    <option value="email">email</option>
+                                    <option value="checkbox">checkbox</option>
+                                    <option value="textarea">textarea</option>
+                                    <option value="password">password</option>
                                 </select>
                             </div>
                             <div class="col-sm-2 no-pl">
                                 <label class="sr-only" for="exampleInputPassword2">Placeholder</label>
-                                <input name="placeholder" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Placeholder">
+                                <input name="placeholder" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Placeholder" data-hd-type="placeholder">
                             </div>
                             <div class="col-sm-1 no-pl">
                                 <label class="sr-only" for="exampleInputPassword2">ID</label>
-                                <input name="ID" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="ID">
+                                <input name="id" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Id" data-hd-type="id">
                             </div>
                             <div class="col-sm-1 no-pl">
                                 <label class="sr-only" for="exampleInputPassword2">Class</label>
-                                <input name="class" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Class">
+                                <input name="class" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Class" data-hd-type="class">
                             </div>
                             <div class="checkbox col-sm-1">
                                 <label>
@@ -184,71 +189,120 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                                 </label>
                             </div>
                             <div class="col-sm-1 no-pl">
-                                <button class="btn btn-danger">Remove</button>
+                                <button class="btn btn-danger remove remove-row">Remove</button>
                             </div>
                         </div>
                     </div>
                     <div class="add mt15">
                         <div class=" col-md-12 no-pl">
-                            <button id="addNew" type="submit" class="btn btn-success">Add new input</button>
+                            <button id="addNewRow" type="submit" class="btn btn-success">Add new input</button>
                         </div>
                     </div>
 
+                    <br>
                     <div class="separator mt15"/></div>
+            <br>
 
-                    <div class="center mt15">
-                        <div class=" col-md-12 no-pl">
-                            <button id="submitForm" type="submit" class="btn btn-primary">Submit form</button>
-                        </div>
+            <div id="buttons">
+                <div class="row well well-new-2">
+                    <div class="col-sm-2 no-pl">
+                        <label>Text</label>
                     </div>
-                </form>
+                    <div class=" col-sm-2 no-pl">
+                        <label>Type</label>
+                    </div>
+                    <div class=" col-sm-2 no-pl">
+                        <label>Color</label>
+                    </div>
+                    <div class="col-sm-2 no-pl">
+                        <label>Action</label>
+                    </div>
+                </div>
+                <div id="button0" class="row well well-new-2 display-none">
+                    <div class="col-sm-2 no-pl">
+                        <label class="sr-only" for="nameInput">Label</label>
+                        <input name="label" type="name" class="form-control input-new" id="nameInput" placeholder="Label" data-hd-type="label">
+                    </div>
+                    <div class=" col-sm-2 no-pl">
+                        <select name="type" class="form-control input-new" data-hd-type="type">
+                            <option value="submit">submit</option>
+                            <option value="skype">skype</option>
+                            <option value="mobile">mobile phone</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2 no-pl">
+                        <select name="color" class="form-control input-new" data-hd-type="color">
+                            <option value="default">default</option>
+                            <option value="red">red</option>
+                            <option value="blue">blue</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1 no-pl">
+                        <button class="btn btn-danger remove remove-button">Remove</button>
+                    </div>
+                </div>
+            </div>
 
+            <div class="add mt15">
+                <div class=" col-md-12 no-pl">
+                    <button id="addNewButton" type="submit" class="btn btn-success">Add new input</button>
+                </div>
+            </div>
 
+            <br>
+            <div class="separator mt15"/></div>
 
-<!--                <div  id="sp-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title">Message us</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form role="form" action="submit.php" id="sp-support-form">
-                                                    <input type="hidden" value="' + location.href + '" name="loc">
-                                                    <input type="hidden" name="nav" value="' + navigator.appName + '">
-                                                    <div class="form-group">
-                                                        <label for="sp-f-e">Label</label>
-                                                        <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                        <label for="sp-f-e">Type</label>
-                                                        <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                        <label for="sp-f-e">Placeholder</label>
-                                                        <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                        <label for="sp-f-e">Class</label>
-                                                        <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                        <label for="sp-f-e">Id</label>
-                                                        <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                        <label for="sp-f-e">Required true/false</label>
-                                                        <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="sp-f-m">Message</label>
-                                                        <textarea id="sp-f-m" class="form-control" name="message" required></textarea>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-lg btn-primary">Submit message</button>
-                                                    <a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a>
-                                                    <a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a>
-                                                </form>
+        <div class="center mt15">
+            <div class=" col-md-12 no-pl">
+                <button id="submitForm" type="submit" class="btn btn-primary">Submit & show form</button>
+            </div>
+        </div>
+    </form>
+
+    <!--                <div  id="sp-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Message us</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form role="form" action="submit.php" id="sp-support-form">
+                                                        <input type="hidden" value="' + location.href + '" name="loc">
+                                                        <input type="hidden" name="nav" value="' + navigator.appName + '">
+                                                        <div class="form-group">
+                                                            <label for="sp-f-e">Label</label>
+                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
+                                                            <label for="sp-f-e">Type</label>
+                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
+                                                            <label for="sp-f-e">Placeholder</label>
+                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
+                                                            <label for="sp-f-e">Class</label>
+                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
+                                                            <label for="sp-f-e">Id</label>
+                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
+                                                            <label for="sp-f-e">Required true/false</label>
+                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="sp-f-m">Message</label>
+                                                            <textarea id="sp-f-m" class="form-control" name="message" required></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-lg btn-primary">Submit message</button>
+                                                        <a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a>
+                                                        <a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>-->
+                                    </div>-->
 
 
-            </div> <!-- /container -->
+</div> <!-- /container -->
 
-    <script src="js/jquery-1.10.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 
-    <script src="js/custom.js"></script>
+<script src="js/custom.js"></script>
 </body>
 </html>

@@ -1,8 +1,10 @@
 var numberOfRows = 0;
 var lastRowNumber = 0;
 
-$(function(){
+var numberOfButtons = 0;
+var lastButtonNumber = 0;
 
+$(function(){
 
     $.getJSON( "config/configureForm.json", function( data ) {
         var parsed = $.parseJSON(data.form);
@@ -15,29 +17,53 @@ $(function(){
         }
 
         var rows = parsed['row'];
-
-        for (var index in rows) {
-            console.log(index);
-            //generovat radky kodu
+        if(rows){
+            for (var i in rows) {
+                cloneRow(lastRowNumber + 1, rows[i]);
+            }
+        } else {
+            cloneRow(lastRowNumber + 1);
         }
 
 
+        var buttons = parsed['button'];
+        if(parsed['button']){
+            for (var j in buttons) {
+                cloneButton(lastButtonNumber + 1, buttons[j]);
+            }
+        } else {
+            cloneButton(lastButtonNumber + 1);
+        }
 
+    }).fail(function() {
+        cloneRow(lastRowNumber + 1);
+        cloneButton(lastButtonNumber + 1);
     });
 
-    cloneRow(lastRowNumber + 1);
 
-    $('#addNew').click(function(e){
+    $('#addNewRow').click(function(e){
         e.preventDefault();
         cloneRow(lastRowNumber + 1);
     });
 
-    $('form#supportForm').on('click','.btn-danger', function(e){
+    $('#addNewButton').click(function(e){
         e.preventDefault();
-        var $parentRow = $(this).parent().parent();
-        if(numberOfRows > 1) {
-            $parentRow.remove();
-            numberOfRows--;
+        cloneButton(lastButtonNumber + 1);
+    });
+
+    $('form#supportForm').on('click','.remove', function(e){
+        e.preventDefault();
+        var $parent = $(this).parent().parent();
+        if($(this).hasClass('remove-row')){
+            if(numberOfRows > 1) {
+                $parent.remove();
+                numberOfRows--;
+            }
+        } else if($(this).hasClass('remove-button')) {
+            if(numberOfButtons > 1) {
+                $parent.remove();
+                numberOfButtons--;
+            }
         }
     });
 
@@ -51,6 +77,7 @@ $(function(){
         $.post('save-form.php', sendArray, function(data){
             parsed = $.parseJSON(data.form);
             var rows = parsed['row'];
+            var buttons = parsed['button'];
 
             var $exampleDiv = $('<div id="sp-modal" tabindex="-1" class="display-none" aria-labelledby="myModalLabel" aria-hidden="true"><button id="goBack" onclick="toggleBack()" class="btn btn-primary" type="button">Back to form config</button><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></div><div class="modal-body"></div></div></div></div>');
             $('div.well-new').append($exampleDiv);
@@ -61,8 +88,8 @@ $(function(){
             $('div.modal-header').append($header);
             $('div.modal-body').append($form);
 
-            for(var index in rows) {
-                var row = rows[index];
+            for(var i in rows) {
+                var row = rows[i];
                 var $div = $('<div class="form-group"></div>');
                 var $input = null;
 
@@ -93,9 +120,41 @@ $(function(){
                 $div.append($input);
 
                 $form.append($div);
-        }
+            }
 
+            var colors= new Array();
+//            var colors = null;
+            colors['red'] = 'btn-danger';
+            colors['blue'] = 'btn-primary';
+            colors['default'] = 'btn-default';
 
+            for(var j in buttons) {
+                var button = buttons[j];
+//                var $div2 = $('<div class="form-group"></div>');
+//                var $input = null;
+
+                if(button['type'] == "skype" || button['type'] == "mobile") {
+                    $input = $(document.createElement('a'));
+                } else {
+                    $input = $(document.createElement('button'));
+                }
+
+                $input.html(button['label']);
+                $input.attr({
+                    'type' : button['type'],
+                    'class': colors[button['color']]
+                });
+                $input.addClass('btn');
+
+//                $div2.append($input);
+                $form.append($input);
+                console.log(button['color']);
+                console.log(colors[button['color']]);
+            }
+
+        //        $form.append('<button type="submit" class="btn btn-lg btn-primary">Submit message</button><a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a><a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a>');
+
+// TODO: UROBIT RESET BUTTON a dokoncit buttony generovani
 
         }, 'json');
 
@@ -104,12 +163,32 @@ $(function(){
 
 
 
-//        $('div.well-new').append('<div class="" id="sp-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Message us</h4></div><div class="modal-body"><form role="form" action="submit.php" id="sp-support-form"><input type="hidden" value="' + location.href + '" name="loc"><input type="hidden" name="nav" value="' + navigator.appName + '"><div class="form-group"><label for="sp-f-e">Email address</label><input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required></div><div class="form-group"><label for="sp-f-m">Message</label><textarea id="sp-f-m" class="form-control" name="message" required></textarea></div><button type="submit" class="btn btn-lg btn-primary">Submit message</button> <a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a> <a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a></form></div></div></div></div>');
+        //        $('div.well-new').append('<div class="" id="sp-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Message us</h4></div><div class="modal-body"><form role="form" action="submit.php" id="sp-support-form"><input type="hidden" value="' + location.href + '" name="loc"><input type="hidden" name="nav" value="' + navigator.appName + '"><div class="form-group"><label for="sp-f-e">Email address</label><input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required></div><div class="form-group"><label for="sp-f-m">Message</label><textarea id="sp-f-m" class="form-control" name="message" required></textarea></div><button type="submit" class="btn btn-lg btn-primary">Submit message</button> <a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a> <a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a></form></div></div></div></div>');
 
-            $('#supportForm').toggle('slow', function(){
-                $('#sp-modal').toggle('slow');
-            });
+        $('#supportForm').toggle('slow', function(){
+            $('#sp-modal').toggle('slow');
+        });
 
+    });
+
+
+    $('input#reset').click(function(e){
+
+        for (var i = numberOfRows; i>1; i-- ) {
+            console.log(i);
+            $('#row'+i).find('.remove-row').trigger('click');
+        }
+
+        for (var j = numberOfButtons; j > 1; j-- ) {
+            $('#button'+j).find('.remove-button').trigger('click');
+        }
+
+        $('#goBack').removeClass('display-none');
+    });
+
+    $('button#goBack').click(function(e){
+        e.preventDefault();
+        location.reload();
     });
 
 })
@@ -122,15 +201,39 @@ function toggleBack () {
 
 }
 
-function cloneRow (rowNumber) {
-    var $clone = $('form#supportForm #0').clone();
+function cloneRow (rowNumber, data) {
+    var $clone = $('form#supportForm #rows #row0').clone();
     $clone.removeClass('display-none');
-    $clone.attr('id',lastRowNumber + 1);
+    $clone.attr('id','row' + (lastRowNumber + 1));
     $clone.find('input, select').each(function(){
         var newName = 'row' + '[' + rowNumber + ']' + '[' + $(this).attr('name') + ']';
         $(this).attr('name',newName);
+
+        if(data) {
+            var type = $(this).attr('data-hd-type');
+            $(this).val(data[type]);
+        }
     });
     $clone.appendTo('form#supportForm #rows');
     numberOfRows++;
     lastRowNumber++;
+}
+
+
+function cloneButton (rowNumber, data) {
+    var $clone = $('form#supportForm #buttons #button0').clone();
+    $clone.removeClass('display-none');
+    $clone.attr('id','button' + (lastButtonNumber + 1));
+    $clone.find('input, select').each(function(){
+        var newName = 'button' + '[' + rowNumber + ']' + '[' + $(this).attr('name') + ']';
+        $(this).attr('name',newName);
+
+            if(data) {
+                var type = $(this).attr('data-hd-type');
+                $(this).val(data[type]);
+            }
+    });
+    $clone.appendTo('form#supportForm #buttons');
+    numberOfButtons++;
+    lastButtonNumber++;
 }
