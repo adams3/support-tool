@@ -19,36 +19,36 @@ $(function(){
         var rows = parsed['row'];
         if(rows){
             for (var i in rows) {
-                cloneRow(lastRowNumber + 1, rows[i]);
+                cloneElement(lastRowNumber + 1,'row', rows[i]);
             }
         } else {
-            cloneRow(lastRowNumber + 1);
+            cloneElement(lastRowNumber + 1,'row');
         }
 
 
         var buttons = parsed['button'];
         if(parsed['button']){
             for (var j in buttons) {
-                cloneButton(lastButtonNumber + 1, buttons[j]);
+                cloneElement(lastButtonNumber + 1,'button', buttons[j]);
             }
         } else {
-            cloneButton(lastButtonNumber + 1);
+            cloneElement(lastButtonNumber + 1, 'button');
         }
 
     }).fail(function() {
-        cloneRow(lastRowNumber + 1);
-        cloneButton(lastButtonNumber + 1);
+        cloneElement(lastRowNumber + 1,'row');
+        cloneElement(lastButtonNumber + 1, 'button');
     });
 
 
     $('#addNewRow').click(function(e){
         e.preventDefault();
-        cloneRow(lastRowNumber + 1);
+        cloneElement(lastRowNumber + 1,'row');
     });
 
     $('#addNewButton').click(function(e){
         e.preventDefault();
-        cloneButton(lastButtonNumber + 1);
+        cloneElement(lastButtonNumber + 1, 'button');
     });
 
     $('form#supportForm').on('click','.remove', function(e){
@@ -83,11 +83,12 @@ $(function(){
             $('div.well-new').append($exampleDiv);
 
             var $header = $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">'+parsed['form-action']+'</h4>');
-            var $form = $('<form role="form" action='+ parsed['url'] +' id="sp-support-form">');
+            var $form = $('<form role="form" action='+ parsed['url'] +' id="sp-support-forms">');
 
             $('div.modal-header').append($header);
             $('div.modal-body').append($form);
 
+            /*********** ROWS **********/
             for(var i in rows) {
                 var row = rows[i];
                 var $div = $('<div class="form-group"></div>');
@@ -122,39 +123,47 @@ $(function(){
                 $form.append($div);
             }
 
+            /*********** BUTTONS **********/
             var colors= new Array();
-//            var colors = null;
             colors['red'] = 'btn-danger';
             colors['blue'] = 'btn-primary';
             colors['default'] = 'btn-default';
 
+            console.log(parsed);
+
             for(var j in buttons) {
                 var button = buttons[j];
-//                var $div2 = $('<div class="form-group"></div>');
-//                var $input = null;
+                //                var $div2 = $('<div class="form-group"></div>');
+                //                var $input = null;
 
                 if(button['type'] == "skype" || button['type'] == "mobile") {
                     $input = $(document.createElement('a'));
+                    if(button['type'] == "skype"){
+                        $input.attr('href','skype:' + parsed['skype']);
+                        $input.html('Skype: ' + button['label']);
+                    } else {
+                        $input.attr('href','tel:' + parsed['phone']);
+                        $input.html('Call to: ' + button['label']);
+                    }
+
                 } else {
                     $input = $(document.createElement('button'));
+                    $input.html(button['label']);
                 }
 
-                $input.html(button['label']);
                 $input.attr({
                     'type' : button['type'],
                     'class': colors[button['color']]
                 });
                 $input.addClass('btn');
 
-//                $div2.append($input);
+                //                $div2.append($input);
                 $form.append($input);
-                console.log(button['color']);
-                console.log(colors[button['color']]);
             }
 
         //        $form.append('<button type="submit" class="btn btn-lg btn-primary">Submit message</button><a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a><a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a>');
 
-// TODO: UROBIT RESET BUTTON a dokoncit buttony generovani
+        // TODO: javascriptna kopirovanie
 
         }, 'json');
 
@@ -174,14 +183,12 @@ $(function(){
 
     $('input#reset').click(function(e){
 
-        for (var i = numberOfRows; i>1; i-- ) {
-            console.log(i);
-            $('#row'+i).find('.remove-row').trigger('click');
-        }
 
-        for (var j = numberOfButtons; j > 1; j-- ) {
-            $('#button'+j).find('.remove-button').trigger('click');
-        }
+        $('body').find('.row-copy, .button-copy').each(function(){
+            if(!$(this).hasClass('display-none')){
+                $(this).find('.remove').trigger('click');
+            }
+        });
 
         $('#goBack').removeClass('display-none');
     });
@@ -201,39 +208,31 @@ function toggleBack () {
 
 }
 
-function cloneRow (rowNumber, data) {
-    var $clone = $('form#supportForm #rows #row0').clone();
+function cloneElement (rowNumber, type, data) {
+    var $clone = $('form#supportForm #' + type + '0').clone();
     $clone.removeClass('display-none');
-    $clone.attr('id','row' + (lastRowNumber + 1));
     $clone.find('input, select').each(function(){
-        var newName = 'row' + '[' + rowNumber + ']' + '[' + $(this).attr('name') + ']';
+        var newName = type + '[' + rowNumber + ']' + '[' + $(this).attr('name') + ']';
         $(this).attr('name',newName);
 
         if(data) {
-            var type = $(this).attr('data-hd-type');
-            $(this).val(data[type]);
+            var hdtype = $(this).attr('data-hd-type');
+            $(this).val(data[hdtype]);
         }
     });
-    $clone.appendTo('form#supportForm #rows');
-    numberOfRows++;
-    lastRowNumber++;
-}
 
+    if(type == 'row'){
+        numberOfRows++;
+        lastRowNumber++;
+        $clone.attr('id',type + (lastRowNumber));
+        $clone.appendTo('form#supportForm #rows');
+    }
 
-function cloneButton (rowNumber, data) {
-    var $clone = $('form#supportForm #buttons #button0').clone();
-    $clone.removeClass('display-none');
-    $clone.attr('id','button' + (lastButtonNumber + 1));
-    $clone.find('input, select').each(function(){
-        var newName = 'button' + '[' + rowNumber + ']' + '[' + $(this).attr('name') + ']';
-        $(this).attr('name',newName);
+    if(type == 'button'){
+        numberOfButtons++;
+        lastButtonNumber++;
+        $clone.attr('id',type + (lastButtonNumber));
+        $clone.appendTo('form#supportForm #buttons');
+    }
 
-            if(data) {
-                var type = $(this).attr('data-hd-type');
-                $(this).val(data[type]);
-            }
-    });
-    $clone.appendTo('form#supportForm #buttons');
-    numberOfButtons++;
-    lastButtonNumber++;
 }

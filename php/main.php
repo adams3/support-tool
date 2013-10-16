@@ -153,7 +153,7 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                                 <label>Action</label>
                             </div>
                         </div>
-                        <div id="row0" class="row well well-new-2 display-none">
+                        <div id="row0" class="row-copy row well well-new-2 display-none">
                             <div class="col-sm-2 no-pl">
                                 <label class="sr-only" for="nameInput">Name</label>
                                 <input name="name" type="name" class="form-control input-new" id="nameInput" placeholder="Name" data-hd-type="name">
@@ -218,7 +218,7 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                         <label>Action</label>
                     </div>
                 </div>
-                <div id="button0" class="row well well-new-2 display-none">
+                <div id="button0" class="button-copy row well well-new-2 display-none">
                     <div class="col-sm-2 no-pl">
                         <label class="sr-only" for="nameInput">Label</label>
                         <input name="label" type="name" class="form-control input-new" id="nameInput" placeholder="Label" data-hd-type="label">
