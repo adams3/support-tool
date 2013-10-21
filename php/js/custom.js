@@ -112,6 +112,12 @@ $(function(){
                 });
                 $input.addClass('form-control');
 
+                if(row['required'] == ""){
+                    $input.attr({
+                        'required' : ''
+                    });
+                }
+
                 $label.attr({
                     'for' : row['id']
                 });
@@ -129,37 +135,42 @@ $(function(){
             colors['blue'] = 'btn-primary';
             colors['default'] = 'btn-default';
 
-            console.log(parsed);
+            var $div2 = $('<div class="btn-group btn-group-justified"></div>');
 
             for(var j in buttons) {
                 var button = buttons[j];
-                //                var $div2 = $('<div class="form-group"></div>');
-                //                var $input = null;
-
-                if(button['type'] == "skype" || button['type'] == "mobile") {
-                    $input = $(document.createElement('a'));
-                    if(button['type'] == "skype"){
+                $input = $(document.createElement('a'));
+                switch (button['type'])
+                {
+                    case "skype":
                         $input.attr('href','skype:' + parsed['skype']);
                         $input.html('Skype: ' + button['label']);
-                    } else {
+                        break;
+                    case "mobile":
                         $input.attr('href','tel:' + parsed['phone']);
                         $input.html('Call to: ' + button['label']);
-                    }
+                        break;
+                    default:
+                        $input.attr('onclick', '$(function(){$("#submitNewForm").trigger("click"); });');
+                        $input.html(button['label']);
 
-                } else {
-                    $input = $(document.createElement('button'));
-                    $input.html(button['label']);
                 }
 
                 $input.attr({
                     'type' : button['type'],
-                    'class': colors[button['color']]
+                    'class': colors[button['color']] + ' btn'
                 });
-                $input.addClass('btn');
 
-                //                $div2.append($input);
-                $form.append($input);
+                $div2.append($input);
+                $form.append($div2);
             }
+
+             $input = $(document.createElement('input'));
+             $input.attr('type','submit');
+             $input.attr('id','submitNewForm');
+             $input.addClass('display-none');
+             $div2.append($input);
+
 
         //        $form.append('<button type="submit" class="btn btn-lg btn-primary">Submit message</button><a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a><a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a>');
 
@@ -179,7 +190,6 @@ $(function(){
         });
 
     });
-
 
     $('input#reset').click(function(e){
 
@@ -218,6 +228,10 @@ function cloneElement (rowNumber, type, data) {
         if(data) {
             var hdtype = $(this).attr('data-hd-type');
             $(this).val(data[hdtype]);
+            
+            if(hdtype == "required" && data[hdtype]== "") {
+                $(this).prop('checked', true);
+            }
         }
     });
 
@@ -231,7 +245,7 @@ function cloneElement (rowNumber, type, data) {
     if(type == 'button'){
         numberOfButtons++;
         lastButtonNumber++;
-        $clone.attr('id',type + (lastButtonNumber));
+        $clone.attr('id', type + (lastButtonNumber));
         $clone.appendTo('form#supportForm #buttons');
     }
 

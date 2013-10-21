@@ -185,7 +185,7 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                             </div>
                             <div class="checkbox col-sm-1">
                                 <label>
-                                    <input name="required"type="checkbox" class=""> Required
+                                    <input name="required"type="checkbox" class="" data-hd-type="required"> Required
                                 </label>
                             </div>
                             <div class="col-sm-1 no-pl">
