@@ -97,7 +97,7 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                     <div class="center">
                         <div class=" col-md-12 no-pl">
                             <input id="reset" type="reset" class="btn btn-danger" value="Reset Form To Default Values">
-                            <button id="goBack" class="btn btn-primary display-none" >Go back</button>
+                            <button id="setBack" class="btn btn-primary display-none" >Go back</button>
                         </div>
                     </div>
                     <div id="rows">
@@ -258,51 +258,11 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
             </div>
         </div>
     </form>
-
-    <!--                <div  id="sp-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title">Message us</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form role="form" action="submit.php" id="sp-support-form">
-                                                        <input type="hidden" value="' + location.href + '" name="loc">
-                                                        <input type="hidden" name="nav" value="' + navigator.appName + '">
-                                                        <div class="form-group">
-                                                            <label for="sp-f-e">Label</label>
-                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                            <label for="sp-f-e">Type</label>
-                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                            <label for="sp-f-e">Placeholder</label>
-                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                            <label for="sp-f-e">Class</label>
-                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                            <label for="sp-f-e">Id</label>
-                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                            <label for="sp-f-e">Required true/false</label>
-                                                            <input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="sp-f-m">Message</label>
-                                                            <textarea id="sp-f-m" class="form-control" name="message" required></textarea>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-lg btn-primary">Submit message</button>
-                                                        <a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a>
-                                                        <a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>-->
-
-
 </div> <!-- /container -->
 
 <script src="js/jquery-1.10.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
 <script src="js/custom.js"></script>
+
 </body>
 </html>
