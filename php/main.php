@@ -262,7 +262,9 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
 
 <script src="js/jquery-1.10.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/ZeroClipboard.js"></script>
 <script src="js/custom.js"></script>
+
 
 </body>
 </html>

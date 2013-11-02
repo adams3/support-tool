@@ -4,6 +4,10 @@ var lastRowNumber = 0;
 var numberOfButtons = 0;
 var lastButtonNumber = 0;
 
+var bootstrapJs = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js";
+var bootstrapCss = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css";
+var filename = "config/helpdesk-form.js";
+
 $(function() {
 
     $.getJSON("config/configureForm.json", function(data) {
@@ -82,12 +86,17 @@ $(function() {
             var $confirmedDiv = $('<div id="confirmed" class="display-none">');
             var $modalDiv = $('<div id="sp-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></div><div class="modal-body"></div></div></div></div>');
             var $goBackButton = $('<button id="goBack" onclick="toggleBack()" class="btn btn-primary" type="button">Back to form config</button>');
-            var $copyMe = $('<div id="copyMe"><button type="button" class="btn btn-info">Copy to clipboard</button><textarea id="copyText" class="form-control" rows="10" readonly></textarea></div>');
-            var $copyMeAdvanced = $('<div id="copyMeAdvanced"><button type="button" class="btn btn-info">Copy to clipboard</button><textarea id="copyTextAdvanced" class="form-control" rows="10" readonly></textarea></div>');
+            var $copyMe = $('<div id="copyMe" class="tab-pane fade in active"><button id="copyButton" type="button" class="btn btn-info" data-clipboard-target="copyText">Copy to clipboard</button><textarea id="copyText" class="form-control" rows="3" readonly></textarea></div>');
+            var $copyMeAdvanced = $('<div id="copyMeAdvanced" class="tab-pane fade in"><button id="copyButtonAdvanced" type="button" class="btn btn-info" data-clipboard-target="copyTextAdvanced">Copy to clipboard</button><textarea id="copyTextAdvanced" class="form-control" rows="10" readonly></textarea></div>');
+            var $tabs = $('<ul id="myTab" class="nav nav-tabs"><li class="active"><a href="#copyMe" data-toggle="tab">Basic copiable script</a></li><li><a href="#copyMeAdvanced" data-toggle="tab">Advanced copiable script</a></li></ul></li></ul>')
+            var $tabContent = $('<div id="myTabContent" class="tab-content">');
+            $tabContent.append($copyMe);
+            $tabContent.append($copyMeAdvanced);
             $confirmedDiv.append($goBackButton);
             $confirmedDiv.append($modalDiv);
-            $confirmedDiv.append($copyMe);
-            $confirmedDiv.append($copyMeAdvanced);
+            $confirmedDiv.append($tabs);
+            $confirmedDiv.append($tabContent);
+
             $('div.well-new').append($confirmedDiv);
 
             var $header = $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + parsed['form-action'] + '</h4>');
@@ -182,23 +191,32 @@ $(function() {
             var supportButton = '$("body").append(\'<div id="support-button" style="position: fixed;right: 0px;bottom: 100px"><a data-toggle="modal" href="#sp-modal"  class="btn btn-primary btn-lg">Contact Us</a></div>\');';
             var form = $('<div>').append($('#sp-modal').clone().addClass('modal fade')).html();
             var modalForm = '$("body").append(\'' + form + '\');';
-            var bootstrapSource = '<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">\n<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>';
+            var bootstrapSource = '<link href="' + bootstrapCss + '" rel="stylesheet">\n<script src="' + bootstrapJs + '"></script>';
             var copiableScript = bootstrapSource + '\n' + '<script>\n' + supportButton + modalForm + '\n</script>';
-            $copyMe.find('textarea').val(copiableScript);
-            var filename = "config/helpdesk-form.js";
+            var formSrc = '\n<script src="' + 'http://' + window.location.hostname + '/' + filename + '"></script>';
+            var copiableScript2 = bootstrapSource + formSrc;
 
             $.post('save-js.php', {message: supportButton + modalForm, filename: filename});
 
-            var formSrc = '\n<script src="'+ 'http://'+ window.location.hostname + '/' + filename + '"></script>';
-            var copiableScript2 = bootstrapSource + formSrc ;
-            $copyMeAdvanced.find('textarea').val(copiableScript2);
+            $copyMe.find('textarea').val(copiableScript2);
+            $copyMeAdvanced.find('textarea').val(copiableScript);
+
+            var clip = new ZeroClipboard($("#copyButton, #copyButtonAdvanced"), {
+                moviePath: "js/ZeroClipboard.swf"
+              } );
+
+              clip.on( "load", function(client) {
+                client.on( "complete", function(client, args) {
+                  $(this).html("Script was copied!");
+                  $(this).addClass("disabled");
+                } );
+              } );
+
 
         }, 'json');
 
-        //TODO: obratit kopirovacie skripty....urobit copy to clipboard, show/hide pro advanced, hlaska ze to bolo skopirovane.
-        //dalej je potreba namysliet ukladanie do db
-
-        //        $('div.well-new').append('<div class="" id="sp-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Message us</h4></div><div class="modal-body"><form role="form" action="submit.php" id="sp-support-form"><input type="hidden" value="' + location.href + '" name="loc"><input type="hidden" name="nav" value="' + navigator.appName + '"><div class="form-group"><label for="sp-f-e">Email address</label><input type="email" class="form-control" id="sp-f-e" placeholder="Enter email" name="mail" required></div><div class="form-group"><label for="sp-f-m">Message</label><textarea id="sp-f-m" class="form-control" name="message" required></textarea></div><button type="submit" class="btn btn-lg btn-primary">Submit message</button> <a class="btn btn-lg btn-default" href="skype:' + skype + '?call">Call the Skype</a> <a href="tel:' + tel + '" class="btn btn-lg btn-default">Call ' + tel + '</a></form></div></div></div></div>');
+        //TODO: nastylovat trosku ten clipboard
+        //nainstalovat jqgrid a zacat s databazou pracovat, navrh db
 
         $('#supportForm').toggle('slow', function() {
             $('#confirmed').toggle('slow');
