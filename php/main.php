@@ -36,6 +36,12 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
         <!-- Custom styles for this template -->
         <link href="css/navbar.css" rel="stylesheet">
         <link href="css/custom.css" rel="stylesheet">
+        <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" media="screen" href="/js/jqGrid-4.5/css/ui.jqgrid.css" />
+
+
+
+
 
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -46,6 +52,9 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
     </head>
 
     <body>
+
+        <table id="list"><tr><td></td></tr></table>
+    <div id="pager"></div>
 
         <div class="container">
 
@@ -263,8 +272,36 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
 <script src="js/jquery-1.10.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/ZeroClipboard.js"></script>
+<script src="js/jqGrid-4.5/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="js/jqGrid-4.5/js/jquery.jqGrid.src.js" type="text/javascript"></script>
 <script src="js/custom.js"></script>
 
+<script type="text/javascript">
+            $(function () {
+                $("#list").jqGrid({
+                    url: "grid.php",
+                    datatype: "json",
+                    mtype: "GET",
+                    colNames: ["ID", "Date Create", "Read", "Flag", "Replied"],
+                    colModel: [
+                        { name: "id", width: 55 },
+                        { name: "date_creat", width: 90 },
+                        { name: "read", width: 80, align: "right" },
+                        { name: "flag", width: 80, align: "right" },
+                        { name: "replied", width: 80, align: "right" }
+                    ],
+                    pager: "#pager",
+                    rowNum: 10,
+                    rowList: [10, 20, 30],
+                    sortname: "id",
+                    sortorder: "desc",
+                    viewrecords: true,
+                    gridview: true,
+                    autoencode: true,
+                    caption: "My first grid"
+                });
+            });
+            </script>
 
 </body>
 </html>
