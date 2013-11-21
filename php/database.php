@@ -14,7 +14,7 @@ $options = array(
 try {
     dibi::connect($options);
 } catch (DibiException $e) {
-    echo"ahoj";
+    echo"error db";
 };
 
 ?>

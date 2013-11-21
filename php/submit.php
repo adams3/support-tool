@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-require 'database.php';
+include 'database.php';
 
 var_dump(json_encode($_GET));
 

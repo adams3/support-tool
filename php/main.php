@@ -285,10 +285,10 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                     colNames: ["ID", "Date Create", "Read", "Flag", "Replied"],
                     colModel: [
                         { name: "id", width: 55 },
-                        { name: "date_creat", width: 90 },
-                        { name: "read", width: 80, align: "right" },
-                        { name: "flag", width: 80, align: "right" },
-                        { name: "replied", width: 80, align: "right" }
+                        { name: "date_create",formatter:'date', formatoptions: { srcformat: "d.m.Y H:i:s", newformat: "d.m.Y H:i:s"},width: 200 },
+                        { name: "read", width: 80, formatter:'checkbox', align: "right" },
+                        { name: "flag", width: 80, formatter:'checkbox', align: "right" },
+                        { name: "replied", width: 80, formatter:'checkbox', align: "right" }
                     ],
                     pager: "#pager",
                     rowNum: 10,
