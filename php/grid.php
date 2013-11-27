@@ -64,50 +64,22 @@ try {
     var_dump($e);
 };
 
-
-//$s .= "<rows>";
-//$s .= "<page>" . $page . "</page>";
-//$s .= "<total>" . $total_pages . "</total>";
-//$s .= "<records>" . $count . "</records>";
-//
-//// be sure to put text data in CDATA
-//while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-//    $s .= "<row id='" . $row['invid'] . "'>";
-//    $s .= "<cell>" . $row['invid'] . "</cell>";
-//    $s .= "<cell>" . $row['invdate'] . "</cell>";
-//    $s .= "<cell>" . $row['amount'] . "</cell>";
-//    $s .= "<cell>" . $row['tax'] . "</cell>";
-//    $s .= "<cell>" . $row['total'] . "</cell>";
-//    $s .= "<cell><![CDATA[" . $row['note'] . "]]></cell>";
-//    $s .= "</row>";
-//}
-//$s .= "</rows>";
-//$json = '"{"name":"askdj","surname":"sakdj","number":"sakdj","message":"dsakjd"}"';
-
 $rowsArr = array();
 foreach ($rows as $i => $row) {
     $rowsArr[$i]["id"] = $i;
     $rowsArr[$i]["cell"][] = $row["id"];
     $rowsArr[$i]["cell"][] = date("d.m.Y H:i:s", strtotime($row["date_create"]));
+    $message = (array) json_decode($row["message"]);
+    $formatedMessage = "";
+    foreach($message as $key => $input) {
+        $formatedMessage .= $key . " : " . $input . "\n" ;
+    }
+    $rowsArr[$i]["cell"][] = $formatedMessage;
+
     $rowsArr[$i]["cell"][] = $row["read"];
     $rowsArr[$i]["cell"][] = $row["flag"];
     $rowsArr[$i]["cell"][] = $row["replied"];
 }
-
-
-//$rowsArr[2]["id"] = 2;
-//$rowsArr[2]["cell"][] = 1;
-//$rowsArr[2]["cell"][] = 2;
-//$rowsArr[2]["cell"][] = 3;
-//$rowsArr[2]["cell"][] = 4;
-
-
-// najst na nete jak parsot array prave pre jqgrid json
-// ako ma vyzerat json pre jqgrid.. How to.
-//xml necem
-// skusit najst dibi s jqgridem nekde rozchodene
-// je treba pouzit dibi? asi ano
-
 
 $resultArr = array();
 $resultArr ["page"] = $page;
@@ -118,7 +90,7 @@ $resultArr ["rows"] = $rowsArr;
 function fix_keys($array) {
     foreach ($array as $k => $val) {
         if (is_array($val)) {
-            $array[$k] = fix_keys($val); //recurse
+            $array[$k] = fix_keys($val); //recursion
         }
         if (is_numeric($k)) {
             $numberCheck = true;
@@ -134,7 +106,6 @@ function fix_keys($array) {
 $arrrr = fix_keys($resultArr);
 
 $js = json_encode($arrrr, JSON_PRETTY_PRINT);
-//echo $count;
 echo $js;
 
 //$js = '{
@@ -162,6 +133,7 @@ echo $js;
 //      }
 //  ]
 //}';
+
 ?>
 
 

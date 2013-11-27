@@ -1,18 +1,31 @@
 <?php
+include 'database.php';
 require_once 'header.php';
+
+$id = $_GET["id"];
+$SQL = "SELECT * FROM hd_message WHERE id = $id";
+
+
+try {
+    $result = dibi::query($SQL);
+    $row = $result->fetchAll();
+} catch (DibiException $e) {
+    var_dump($e);
+};
+
+$row = $row[0];
+
+var_dump($row["id"]);
+
+
+// TODO zmenit formular a vyplnit mailto addCC Bcc atd a spravu dat a napojit na mailgun
+
+
+
 ?>
 
 
-<!-- Main component for a primary marketing message or call to action -->
-<div class="jumbotron">
-    <h1>Edit Your Form</h1>
-    <!--<p>
-        <a class="btn btn-lg btn-primary" href="#">View navbar docs &raquo;</a>
-    </p>-->
-</div>
 <div class="well well-new">
-
-
 
     <form id="supportForm" class="form-horizontal" name="config-form" role="form" action="save-form.php" method="post">
         <div class="center">
@@ -185,4 +198,3 @@ require_once 'header.php';
 <?php
 require_once 'footer.php';
 ?>
-

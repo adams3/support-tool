@@ -203,14 +203,14 @@ $(function() {
 
             var clip = new ZeroClipboard($("#copyButton, #copyButtonAdvanced"), {
                 moviePath: "js/ZeroClipboard.swf"
-              } );
+            });
 
-              clip.on( "load", function(client) {
-                client.on( "complete", function(client, args) {
-                  $(this).html("Script was copied!");
-                  $(this).addClass("disabled");
-                } );
-              } );
+            clip.on("load", function(client) {
+                client.on("complete", function(client, args) {
+                    $(this).html("Script was copied!");
+                    $(this).addClass("disabled");
+                });
+            });
 
 
         }, 'json');
@@ -239,7 +239,45 @@ $(function() {
         location.reload();
     });
 
-})
+
+
+////////////////////////////GRID ///////////////////////////////
+
+    $("#list").jqGrid({
+        url: "grid.php",
+        datatype: "json",
+        mtype: "GET",
+        colNames: ["ID", "Date Create", "Message", "Read", "Flag", "Replied", "Action"],
+        colModel: [
+            {name: "id", width: 55},
+            {name: "date_create", formatter: 'date', formatoptions: {srcformat: "d.m.Y H:i:s", newformat: "d.m.Y H:i:s"}, width: 200},
+            {name: "message", formatter: 'text', width: 200},
+            {name: "read", width: 80, formatter: 'checkbox', align: "center"},
+            {name: "flag", width: 80, formatter: 'checkbox', align: "center"},
+            {name: "replied", width: 80, formatter: 'checkbox', align: "center"},
+            {name: "action", widt: 40 , formatter: PKId_formatter, align: "center" }
+        ],
+        pager: "#pager",
+        rowNum: 20,
+        rowList: [10, 20, 30, 40, 50],
+        sortname: "id",
+        sortorder: "desc",
+        viewrecords: true,
+        gridview: true,
+        autoencode: true,
+        caption: "Received emails"
+    });
+
+});
+
+////////////////////////////////////////////////////////////////////////
+
+
+function PKId_formatter(cellvalue, options, rowObject) {
+    console.log(options);
+    return '<a href="reply.php?id=' + rowObject[0] + '">Reply</a>';
+}
+
 
 function toggleBack() {
     $('#confirmed').toggle('slow', function() {
