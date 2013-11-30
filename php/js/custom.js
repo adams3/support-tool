@@ -246,6 +246,8 @@ $(function() {
     $("#list").jqGrid({
         url: "grid.php",
         datatype: "json",
+        autowidth: true,
+        height:$(window).height()-220,
         mtype: "GET",
         colNames: ["ID", "Date Create", "Message", "Read", "Flag", "Replied", "Action"],
         colModel: [
@@ -265,7 +267,7 @@ $(function() {
         viewrecords: true,
         gridview: true,
         autoencode: true,
-        caption: "Received emails"
+        caption: "Received emails",
     });
 
 });
