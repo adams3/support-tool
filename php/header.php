@@ -17,6 +17,17 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
         }
     }
 }
+
+$uri = $_SERVER["REQUEST_URI"];
+$a1 = "";
+$a2 = "";
+if($uri == "/main.php") {
+    $a1="active";
+}
+if($uri == "/mails.php") {
+    $a2="active";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -60,12 +71,12 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand" href="#">Support Form Admin</a>
+                    <a class="navbar-brand" href="/">Support Form Admin</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Form Maker</a></li>
-                        <li class="dropdown">
+                        <li class="<?php echo $a1;?>"><a href="/">Form Maker</a></li>
+                        <li class="dropdown <?php echo $a2;?>">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpdesk<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/mails.php">Reply to customers</a></li>
