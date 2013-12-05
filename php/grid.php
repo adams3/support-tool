@@ -2,32 +2,13 @@
 
 include 'database.php';
 
-// to the url parameter are added 4 parameters as described in colModel
-// we should get these parameters to construct the needed query
-// Since we specify in the options of the grid that we will use a GET method
-// we should use the appropriate command to obtain the parameters.
-// In our case this is $_GET. If we specify that we want to use post
-// we should use $_POST. Maybe the better way is to use $_REQUEST, which
-// contain both the GET and POST variables. For more information refer to php documentation.
-// Get the requested page. By default grid sets this to 1.
 $page = $_GET['page'];
-
-// get how many rows we want to have into the grid - rowNum parameter in the grid
 $limit = $_GET['rows'];
-
-// get index row - i.e. user click to sort. At first time sortname parameter -
-// after that the index from colModel
 $sidx = $_GET['sidx'];
-
-// sorting order - at first time sortorder
 $sord = $_GET['sord'];
-
-// if we not pass at first time index use the first column for the index or what you want
 if (!$sidx)
     $sidx = 1;
 
-// calculate the number of rows for the query. We need this for paging the result
-//$result = mysql_query("SELECT COUNT(*) AS count FROM invheader");
 $result = dibi::query('SELECT COUNT(*) AS count FROM `hd_message`');
 $count = $result->fetchSingle();
 
@@ -107,32 +88,6 @@ $arrrr = fix_keys($resultArr);
 
 $js = json_encode($arrrr, JSON_PRETTY_PRINT);
 echo $js;
-
-//$js = '{
-//  "page": "1",
-//  "records": "10",
-//  "total": "2",
-//  "rows": [
-//      {
-//          "id": 3,
-//          "cell": [
-//              1,
-//              "teaasdfasdf",
-//              "2010-09-28T21:49:21",
-//              "2010-09-28T21:49:21"
-//          ]
-//      },
-//      {
-//          "id": 1,
-//          "cell": [
-//              1,
-//              "teaasdfasdf",
-//              "2010-09-28T21:49:21",
-//              "2010-09-28T21:49:21"
-//          ]
-//      }
-//  ]
-//}';
 
 ?>
 

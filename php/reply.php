@@ -5,6 +5,13 @@ require_once 'vendor/autoload.php';
 
 use Mailgun\Mailgun;
 
+$rowString = "";
+$configFile = "config/configureForm.json";
+
+$json = json_decode(file_get_contents($configFile), true);
+$form =(array) json_decode($json["form"]);
+
+
 if ($_GET["id"]) {
     $id = $_GET["id"];
     $SQL = "SELECT * FROM hd_message WHERE id = $id";
@@ -16,6 +23,28 @@ if ($_GET["id"]) {
         die($e);
     };
     $row = $row[0];
+    $rowString = "\n\n------------------------------------------------------------------------------\n";
+    $rowString .= "Date of creation : ".date("d.m.Y H:i:s", strtotime($row["date_create"])) . "\n";
+    $message = (array) json_decode($row["message"]);
+    $formatedMessage = "";
+    foreach($message as $key => $input) {
+        $formatedMessage .= $key . " : " . $input . "\n" ;
+    }
+    $rowString .= $formatedMessage;
+
+    $domain="";
+//    $domain = $row["domain"];
+    $from = $form["send-to"];
+//    $to = get mail
+    $subject="Reply to query no. " . $row["id"] . " from ". $domain;
+
+    //pri odoslani formulara z frontu, odoslat aj domenu z ktorej je form odoslany
+    //do db dorobit domain
+
+
+
+
+
 }
 
 if ($_POST) {
@@ -58,7 +87,7 @@ if ($_POST) {
             <div class="row well well-new-2">
                 <div class="col-sm-6 no-pl">
                     <label for="fromInput">From</label>
-                    <input name="from" type="email" class="form-control input-new" id="fromInput" placeholder="From" required>
+                    <input name="from" type="email" class="form-control input-new" id="fromInput" placeholder="From" required value="<?php echo $from?>">
                 </div>
                 <div class="col-sm-6 no-pl">
                     <label for="toInput">To</label>
@@ -76,11 +105,11 @@ if ($_POST) {
             <div class="row well well-new-2">
                 <div class="col-md-12 no-pl">
                     <label for="subject">Subject</label>
-                    <input name="subject" type="text" class="form-control input-new" id="subject" placeholder="Subject" required>
+                    <input name="subject" type="text" class="form-control input-new" id="subject" placeholder="Subject" required value="<?php echo $subject?>">
                 </div>
                 <div class="col-md-12 no-pl">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" class="form-control" rows="10"></textarea>
+                    <textarea id="message" name="message" class="form-control" rows="10"><?php echo $rowString; ?></textarea>
                 </div>
             </div>
 
