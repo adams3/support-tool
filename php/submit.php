@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: *');
 include 'database.php';
 
-var_dump(json_encode($_GET));
+//var_dump(json_encode($_GET));
 
 $args = array(
     'date_create%sql' => 'NOW()',
