@@ -1,12 +1,11 @@
 <?php
 
-include 'database.php';
+include 'functions.php';
 require_once 'vendor/autoload.php';
 
 use Mailgun\Mailgun;
 
 if ($_POST) {
-
     $to = $_POST["to"];
     $subject = $_POST["subject"];
     $from = $_POST["from"];
@@ -18,22 +17,29 @@ if ($_POST) {
     $mg = new Mailgun("key-75wv99jndh25oueyatftijqf09xjk9v5");
     $domain = "sandbox7573.mailgun.org";
 
+
     if (!empty($messageId)) {
         $arr = array();
         $arr["replied"] = 1;
         $arr["message"] = json_encode(array("reply" => $message));
         $arr['date_create%sql'] = 'NOW()';
-        dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $messageId);
+
+        updateRow($arr, $messageId);
     }
 
-    $res = $mg->sendMessage($domain, array('from' => $from,
-        'to' => $to,
-        'cc' => $cc,
-        'bcc' => $bcc,
-        'subject' => $subject,
-        'text' => $message));
+//    $res = $mg->sendMessage($domain, array('from' => $from,
+//        'to' => $to,
+//        'cc' => $cc,
+//        'bcc' => $bcc,
+//        'subject' => $subject,
+//        'text' => $message
+//            ));
+//
+    $sent = "success";
+//    if($res["success"]){
+//        $sent = "danger";
+//    }
 
-    header("location:reply.php?id=". $messageId."?sent=true");
+    header("location:reply.php?id=" . $messageId . "&sent=" . $sent);
 }
-
 ?>

@@ -1,51 +1,37 @@
 <?php
-include 'database.php';
-include 'functions.php';
 require_once 'header.php';
-//require_once 'vendor/autoload.php';
-//
-//use Mailgun\Mailgun;
 
 $rowString = "";
+$sent = $_GET["sent"];
 $configFile = "config/configureForm.json";
 
 $json = json_decode(file_get_contents($configFile), true);
 $form = (array) json_decode($json["form"]);
 
-
 if ($_GET["id"]) {
     $id = $_GET["id"];
-    $SQL = "SELECT * FROM hd_message WHERE id = $id";
 
-    try {
-        $result = dibi::query($SQL);
-        $row = $result->fetchAll();
-    } catch (DibiException $e) {
-        die($e);
-    };
+    $row = getMessageById($id);
+    markMessageAsRead((int) $id);
 
-    $row = $row[0];
     $rowString = "\n\n------------------------------------------------------------------------------\n";
     $informMessage = "Your message from: ";
-    if($row["replied"]) {
+
+    if ($row["replied"]) {
         $informMessage = "Administrator reply from: ";
     }
+
     $rowString .= $informMessage . date("d.m.Y H:i:s", strtotime($row["date_create"])) . "\n\n";
 
-    if (isJson($row["message"])) {
-        $message = (array) json_decode($row["message"]);
-        $formatedMessage = "";
-        foreach ($message as $key => $input) {
-            $formatedMessage .= $key . " : " . $input . "\n";
-        }
-    } else {
-        $formatedMessage = $row["message"];
+    $formatedMessage = "";
+    $message = (array) json_decode($row["message"]);
+    foreach ($message as $key => $input) {
+        $formatedMessage .= $key . " : " . $input . "\n";
     }
-
     $rowString .= $formatedMessage;
 
-    $domain = "";
-//    $domain = $row["domain"];
+//    $domain = "";
+    $domain = $row["domain"];
     $from = $form["send-to"];
     $to = "";
 
@@ -62,41 +48,13 @@ if ($_GET["id"]) {
     }
 
     $subject = "Reply to query no. " . $row["id"] . " from " . $domain;
-
-    //pri odoslani formulara z frontu, odoslat aj domenu z ktorej je form odoslany
-    //do db dorobit domain
 }
 
-//if ($_POST) {
-//
-//    $to = $_POST["to"];
-//    $subject = $_POST["subject"];
-//    $from = $_POST["from"];
-//    $cc = $_POST["cc"];
-//    $bcc = $_POST["bcc"];
-//    $message = $_POST["message"];
-//    $messageId = $_POST["messageId"];
-//
-//    $mg = new Mailgun("key-75wv99jndh25oueyatftijqf09xjk9v5");
-//    $domain = "sandbox7573.mailgun.org";
-//
-//    if (!empty($messageId)) {
-//        $arr = array();
-//        $arr["replied"] = 1;
-//        $arr["message"] = json_encode(array("reply" => $message));
-//        $arr['date_create%sql'] = 'NOW()';
-//        dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $messageId);
-//    }
-//
-////    $res = $mg->sendMessage($domain, array('from' => $from,
-////        'to' => $to,
-////        'cc' => $cc,
-////        'bcc' => $bcc,
-////        'subject' => $subject,
-////        'text' => $message));
-//
-//    header("location:reply.php?id=". $messageId);
-//}
+if ($sent == "success") {
+    echo '<div class="alert alert-success">Well done! The message has been successfully sent.</div>';
+} else if ($sent == "danger") {
+    echo '<div class="alert alert-danger">Oh snap! There was an error while sending this message.</div>';
+}
 ?>
 
 <div class="well well-new">
@@ -105,19 +63,19 @@ if ($_GET["id"]) {
             <div class="row well well-new-2">
                 <div class="col-sm-6 no-pl">
                     <label for="fromInput">From</label>
-                    <input name="from" type="email" class="form-control input-new" id="fromInput" placeholder="From" required value="<?php echo $from; ?>">
+                    <input name="from" type="email" multiple class="form-control input-new" id="fromInput" placeholder="From" required value="<?php echo $from; ?>">
                 </div>
                 <div class="col-sm-6 no-pl">
                     <label for="toInput">To</label>
-                    <input name="to" type="email" class="form-control input-new" id="toInput" placeholder="example@me.com" value="<?php echo $to; ?>" required>
+                    <input name="to" type="email"  multiple class="form-control input-new" id="toInput" placeholder="example@me.com" value="<?php echo $to; ?>" required>
                 </div>
                 <div class="col-sm-6 no-pl">
                     <label for="toCcInput">Send copy to (Cc)</label>
-                    <input name="cc" type="email" class="form-control input-new" id="toCcInput" placeholder="example@me.com">
+                    <input name="cc" type="email" multiple class="form-control input-new" id="toCcInput" placeholder="example@me.com">
                 </div>
                 <div class="col-sm-6 no-pl">
                     <label for="tobccInput">Send copy to (Bcc)</label>
-                    <input name="bcc" type="email" class="form-control input-new" id="toBccInput" placeholder="example@me.com">
+                    <input name="bcc" type="email" multiple class="form-control input-new" id="toBccInput" placeholder="example@me.com">
                 </div>
             </div>
             <div class="row well well-new-2">

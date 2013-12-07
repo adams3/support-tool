@@ -1,4 +1,5 @@
 <?php
+include "functions.php";
 $configFile = "config/configure.json";
 
 $json = json_decode(file_get_contents($configFile), true);
@@ -21,13 +22,12 @@ if ($_SESSION["login"] != $json["admin"]["login"]) {
 $uri = $_SERVER["REQUEST_URI"];
 $a1 = "";
 $a2 = "";
-if($uri == "/main.php") {
-    $a1="active";
+if ($uri == "/main.php") {
+    $a1 = "active";
 }
-if($uri == "/mails.php") {
-    $a2="active";
+if ($uri == "/mails.php") {
+    $a2 = "active";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +58,7 @@ if($uri == "/mails.php") {
     <body>
 
 
-    <div id="pager"></div>
+        <div id="pager"></div>
 
         <div class="container">
 
@@ -75,19 +75,19 @@ if($uri == "/mails.php") {
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="<?php echo $a1;?>"><a href="/">Form Maker</a></li>
-                        <li class="dropdown <?php echo $a2;?>">
+                        <li class="<?php echo $a1; ?>"><a href="/">Form Maker</a></li>
+                        <li class="<?php echo $a1; ?>"><a href="/mails.php">Customer queries <span class="badge"><?php echo getNumberOfUnread() ?></span></a></li>
+                        <li class="<?php echo $a1; ?>"><a href="/reply.php">New message</a></li>
+<!--                        <li class="dropdown <?php echo $a2; ?>">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpdesk<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/mails.php">Reply to customers</a></li>
-                                <li><a href="#">Write new</a></li>
-                                <li><a href="#">Customer list</a></li>
-                                <!--                                <li class="divider"></li>
-                                                                <li class="dropdown-header">Nav header</li>
-                                                                <li><a href="#"></a></li>
-                                                                <li><a href="#">One more separated link</a></li>-->
-                            </ul>
-                        </li>
+                                <li><a href="/mails.php">Customer queries</a></li>
+                                <li><a href="/reply.php">New message</a></li>-->
+                        <!--                                <li class="divider"></li>
+                                                        <li class="dropdown-header">Nav header</li>
+                                                        <li><a href="#">One more separated link</a></li>-->
+                    </ul>
+                    </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active"><a href="/logout.php">Logout</a></li>
@@ -95,4 +95,4 @@ if($uri == "/mails.php") {
                 </div><!--/.nav-collapse -->
             </div>
         </div>
-    <div class="container">
+        <div class="container">

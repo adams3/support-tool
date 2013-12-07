@@ -104,6 +104,8 @@ $(function() {
 
             $('div.modal-header').append($header);
             $('div.modal-body').append($form);
+            $form.append('<input id="domain" name="domain" type="hidden" />');
+            $form.append('<div id="alertMessage" class="alert" style="display:none;"></div>');
 
             /*********** ROWS **********/
             for (var i in rows) {
@@ -190,7 +192,8 @@ $(function() {
 
             var supportButton = '$("body").append(\'<div id="support-button" style="position: fixed;right: 0px;bottom: 100px"><a data-toggle="modal" href="#sp-modal"  class="btn btn-primary btn-lg">Contact Us</a></div>\');';
             var form = $('<div>').append($('#sp-modal').clone().addClass('modal fade')).html();
-            var modalForm = '$("body").append(\'' + form + '\');';
+            var ajaxSubmit = "$('form#sp-support-forms').on('submit', function(e) { e.preventDefault();var parsed=null; $.post($(this).attr('action'), $(this).serializeArray(), function(data) { parsed = $.parseJSON(data.form); $('#alertMessage').addClass(data['class']); $('#alertMessage').show(); $('#alertMessage').html(data['alertMessage']);},'json'); });";
+            var modalForm = '$("body").append(\'' + form + '\');' + '$("#domain").val(window.location.hostname);' + ajaxSubmit;
             var bootstrapSource = '<link href="' + bootstrapCss + '" rel="stylesheet">\n<script src="' + bootstrapJs + '"></script>';
             var copiableScript = bootstrapSource + '\n' + '<script>\n' + supportButton + modalForm + '\n</script>';
             var formSrc = '\n<script src="' + 'http://' + window.location.hostname + '/' + filename + '"></script>';
@@ -215,8 +218,9 @@ $(function() {
 
         }, 'json');
 
-        //TODO: nastylovat trosku ten clipboard
-        //nainstalovat jqgrid a zacat s databazou pracovat, navrh db
+        //TODO: nastylovat trosku ten clipboard, pohrat sa s vypisom jqgridu co sa tyka stylovania, najst jqgrid s bootstrap alebo responsive plugin.
+        // nahrat to na openshift a vytvorit databazu a nejake test web...
+        //napriklad /test na rovnakej domene.
 
         $('#supportForm').toggle('slow', function() {
             $('#confirmed').toggle('slow');
@@ -247,7 +251,7 @@ $(function() {
         url: "grid.php",
         datatype: "json",
         autowidth: true,
-        height:$(window).height()-220,
+        height: $(window).height() - 220,
         mtype: "GET",
         colNames: ["ID", "Date Create", "Message", "Read", "Flag", "Replied", "Action"],
         colModel: [
@@ -257,7 +261,7 @@ $(function() {
             {name: "read", width: 80, formatter: 'checkbox', align: "center"},
             {name: "flag", width: 80, formatter: 'checkbox', align: "center"},
             {name: "replied", width: 80, formatter: 'checkbox', align: "center"},
-            {name: "action", widt: 40 , formatter: PKId_formatter, align: "center" }
+            {name: "action", widt: 40, formatter: PKId_formatter, align: "center"}
         ],
         pager: "#pager",
         rowNum: 20,
