@@ -2,7 +2,11 @@
 require_once 'header.php';
 ?>
 
-<table id="list"><tr><td></td></tr></table>
+<div id="mails">
+    <table id="jqGridMails"></table>
+    <div id="pager"></div>
+</div>
+
 
 <?php
 require_once 'footer.php';

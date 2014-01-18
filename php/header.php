@@ -5,6 +5,9 @@ $configFile = "config/configure.json";
 $json = json_decode(file_get_contents($configFile), true);
 session_start();
 
+//login and select user
+//http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
+
 if ($_SESSION["login"] != $json["admin"]["login"]) {
 
     if ($json["admin"]["login"] == $_POST["login"] && $json["admin"]["password"] == $_POST["password"]) {
@@ -46,8 +49,11 @@ if ($uri == "/mails.php") {
         <!-- Custom styles for this template -->
         <link href="css/navbar.css" rel="stylesheet">
         <link href="css/custom.css" rel="stylesheet">
-        <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+        <!--<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">-->
         <link rel="stylesheet" type="text/css" media="screen" href="/js/jqGrid-4.5/css/ui.jqgrid.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/jquery-ui-1.10.3.custom.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/ui.jqgrid.css" />
+        <!--<link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/jqGrid.overrides.css" />-->
 
         <!--[if lt IE 9]>
           <script src="../../assets/js/html5shiv.js"></script>
@@ -87,12 +93,11 @@ if ($uri == "/mails.php") {
                                                         <li class="dropdown-header">Nav header</li>
                                                         <li><a href="#">One more separated link</a></li>-->
                     </ul>
-                    </li>
-                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active"><a href="/logout.php">Logout</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
         </div>
+
         <div class="container">

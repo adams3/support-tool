@@ -54,4 +54,12 @@ function insertRow($arr) {
     } catch (DibiException $e) {
         die($e);
     };
+
+function login($email, $password) {
+    try {
+        $password = sha1($password);
+        dibi::query("SELECT FROM `hd_user` WHERE email = $email AND password = $password");
+    } catch (DibiException $e) {
+        die($e);
+    };
 }

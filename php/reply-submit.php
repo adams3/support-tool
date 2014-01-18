@@ -27,15 +27,22 @@ if ($_POST) {
         updateRow($arr, $messageId);
     }
 
-//    $res = $mg->sendMessage($domain, array('from' => $from,
-//        'to' => $to,
-//        'cc' => $cc,
-//        'bcc' => $bcc,
-//        'subject' => $subject,
-//        'text' => $message
-//            ));
-//
+    $mailValues = array('from' => $from,
+        'to' => $to,
+        'subject' => $subject,
+        'text' => $message
+    );
+    if($bcc) {
+        $mailValues["bcc"] = $bcc;
+    }
+    if($cc) {
+        $mailValues["cc"] = $cc;
+    }
+
+    $res = $mg->sendMessage($domain, $mailValues);
+
     $sent = "success";
+
 //    if($res["success"]){
 //        $sent = "danger";
 //    }

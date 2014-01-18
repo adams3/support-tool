@@ -218,7 +218,8 @@ $(function() {
 
         }, 'json');
 
-        //TODO: nastylovat trosku ten clipboard, pohrat sa s vypisom jqgridu co sa tyka stylovania, najst jqgrid s bootstrap alebo responsive plugin.
+        //TODO: nastylovat trosku ten clipboard
+        //checkboxy nastylovat v gride 
         // nahrat to na openshift a vytvorit databazu a nejake test web...
         //napriklad /test na rovnakej domene.
 
@@ -247,41 +248,58 @@ $(function() {
 
 ////////////////////////////GRID ///////////////////////////////
 
-    $("#list").jqGrid({
-        url: "grid.php",
-        datatype: "json",
-        autowidth: true,
-        height: $(window).height() - 220,
-        mtype: "GET",
-        colNames: ["ID", "Date Create", "Message", "Read", "Flag", "Replied", "Action"],
-        colModel: [
+    $("#jqGridMails").jqGrid({
+    url: "grid.php",
+            datatype: "json",
+            height: $(window).height() - 220,
+            mtype: "GET",
+            colNames: ["ID", "Date Create", "Message", "Read", "Flag", "Replied", "Action"],
+            colModel: [
             {name: "id", width: 55},
             {name: "date_create", formatter: 'date', formatoptions: {srcformat: "d.m.Y H:i:s", newformat: "d.m.Y H:i:s"}, width: 200},
-            {name: "message", formatter: 'text', width: 200},
+            {name: "message", width: 200,
+                    formatter: function(v) {
+                        return '<div class="mh50">' + v + '</div>';
+                    }
+            },
             {name: "read", width: 80, formatter: 'checkbox', align: "center"},
             {name: "flag", width: 80, formatter: 'checkbox', align: "center"},
             {name: "replied", width: 80, formatter: 'checkbox', align: "center"},
-            {name: "action", widt: 40, formatter: PKId_formatter, align: "center"}
-        ],
-        pager: "#pager",
-        rowNum: 20,
-        rowList: [10, 20, 30, 40, 50],
-        sortname: "id",
-        sortorder: "desc",
-        viewrecords: true,
-        gridview: true,
-        autoencode: true,
-        caption: "Received emails",
+            {name: "action", widt: 40, formatter: reply_formatter, align: "center"}
+            ],
+            pager: "#pager",
+            rowNum: 20,
+            rowList: [10, 20, 30, 40, 50],
+            sortname: "id",
+            sortorder: "desc",
+            viewrecords: true,
+            gridview: true,
+            autoencode: true,
+            caption: "Received emails",
+            onSelectRow: handleSelectedRow
     });
+
+    $(window).bind('resize', function() {
+        $("#jqGridMails").setGridWidth($('#mails').width(), true);
+    }).trigger('resize');
 
 });
 
 ////////////////////////////////////////////////////////////////////////
 
 
-function PKId_formatter(cellvalue, options, rowObject) {
-    console.log(options);
+function reply_formatter(cellvalue, options, rowObject) {
     return '<a href="reply.php?id=' + rowObject[0] + '">Reply</a>';
+}
+
+function handleSelectedRow(rowId, status, e) {
+    var div = $("#" + rowId).children("td[aria-describedby=jqGridMails_message]").find("div");
+    if (status) {
+        div.removeClass("mh50");
+    } else {
+        div.addClass("mh50");
+        $(this).jqGrid('resetSelection');
+    }
 }
 
 

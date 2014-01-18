@@ -86,7 +86,7 @@ function fix_keys($array) {
 
 $arrrr = fix_keys($resultArr);
 
-$js = json_encode($arrrr, JSON_PRETTY_PRINT);
+$js = json_encode($arrrr);
 echo $js;
 
 ?>
