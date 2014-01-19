@@ -1,26 +1,46 @@
 <?php
 include "functions.php";
-$configFile = "config/configure.json";
 
-$json = json_decode(file_get_contents($configFile), true);
 session_start();
 
-//login and select user
-//http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
-
-if ($_SESSION["login"] != $json["admin"]["login"]) {
-
-    if ($json["admin"]["login"] == $_POST["login"] && $json["admin"]["password"] == $_POST["password"]) {
-        $_SESSION["login"] = $_POST["login"];
-        $_SESSION["password"] = md5($_POST["password"]);
+if ( $_POST["submit"] == "login" && $_POST["email"] && $_POST["password"]) {
+    $user = login($_POST["email"], $_POST["password"]);
+    if ($user) {
+        $_SESSION["id"] = $user["id"];
+        $_SESSION["email"] = $user["email"];
     } else {
-        if ($_POST) {
-            header("location:index.php?success=false");
-        } else {
-            header("location:index.php");
-        }
+        header("location:index.php?success=false");
+        exit();
     }
 }
+
+/*
+TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zmena hesla a poslanie na email
+ nadstavba formularov
+ config zatial bude robit len advanced, potom sa tam musi vlozit do adresara ktory sa bude volat /md5(customer_ID)/md5(form_ID)/helpdeskForm.js
+ je treba tabulka pre formular s customer id
+ je treba tabulka hd_message customer_id + form_id
+
+ *
+ *  */
+
+if ($_POST["submit"] == "register") {
+    $data = $_POST;
+    unset($data["submit"]);
+    if(register($data)) {
+        header("location:index.php?success=registered");
+    } else {
+        header("location:index.php?success=exists&email=".$data["email"]);
+    }
+    exit();
+}
+
+if (!isset($_SESSION["id"]) || !isset($_SESSION["email"])) {
+    die;
+    header("location:index.php");
+    exit();
+}
+
 
 $uri = $_SERVER["REQUEST_URI"];
 $a1 = "";
@@ -49,7 +69,6 @@ if ($uri == "/mails.php") {
         <!-- Custom styles for this template -->
         <link href="css/navbar.css" rel="stylesheet">
         <link href="css/custom.css" rel="stylesheet">
-        <!--<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">-->
         <link rel="stylesheet" type="text/css" media="screen" href="/js/jqGrid-4.5/css/ui.jqgrid.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/jquery-ui-1.10.3.custom.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/ui.jqgrid.css" />

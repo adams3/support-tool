@@ -1,10 +1,9 @@
 <?php
 session_start();
-if(isset($_SESSION["login"])){
-    unset($_SESSION["login"]);
-    unset($_SESSION["password"]);
-}
+$_SESSION = array();
+session_destroy();
 
 header("location:index.php?success=true");
+exit();
 
 ?>

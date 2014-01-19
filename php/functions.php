@@ -1,4 +1,5 @@
 <?php
+
 include 'database.php';
 
 function isJson($string) {
@@ -15,7 +16,7 @@ function getNumberOfUnread() {
         return count($row);
     } catch (DibiException $e) {
         var_dump($e);
-    };
+    }
 }
 
 function getMessageById($id) {
@@ -25,7 +26,7 @@ function getMessageById($id) {
         $row = $result->fetchAll();
     } catch (DibiException $e) {
         die($e);
-    };
+    }
 
     return $row[0];
 }
@@ -37,7 +38,7 @@ function markMessageAsRead($id) {
         dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $id);
     } catch (DibiException $e) {
         die($e);
-    };
+    }
 }
 
 function updateRow($arr, $messageId) {
@@ -45,7 +46,7 @@ function updateRow($arr, $messageId) {
         dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $messageId);
     } catch (DibiException $e) {
         die($e);
-    };
+    }
 }
 
 function insertRow($arr) {
@@ -53,13 +54,32 @@ function insertRow($arr) {
         dibi::query('INSERT INTO `hd_message`', $arr);
     } catch (DibiException $e) {
         die($e);
-    };
+    }
+}
 
 function login($email, $password) {
     try {
-        $password = sha1($password);
-        dibi::query("SELECT FROM `hd_user` WHERE email = $email AND password = $password");
+        $email = mysql_real_escape_string($email);
+        $password = md5(mysql_real_escape_string($password));
+
+        $result = dibi::query("SELECT id, email, name, surname FROM `hd_user` WHERE email = '$email' AND password = '$password'");
+        $row = $result->fetchAll();
     } catch (DibiException $e) {
         die($e);
-    };
+    }
+    return $row[0];
+}
+
+function register($data) {
+    try {
+        $data["email"] = mysql_real_escape_string($data["email"]);
+        $data["password"] = md5(mysql_real_escape_string($data["password"]));
+        $data["name"] = mysql_real_escape_string($data["name"]);
+        $data["surname"] = mysql_real_escape_string($data["surname"]);
+        dibi::query('INSERT INTO `hd_user`', $data);
+
+        return true;
+    } catch (DibiException $e) {
+        return false;
+    }
 }

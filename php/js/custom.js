@@ -219,7 +219,7 @@ $(function() {
         }, 'json');
 
         //TODO: nastylovat trosku ten clipboard
-        //checkboxy nastylovat v gride 
+        //checkboxy nastylovat v gride
         // nahrat to na openshift a vytvorit databazu a nejake test web...
         //napriklad /test na rovnakej domene.
 
@@ -282,6 +282,12 @@ $(function() {
     $(window).bind('resize', function() {
         $("#jqGridMails").setGridWidth($('#mails').width(), true);
     }).trigger('resize');
+
+    $("#notRegistered, #backToLogin").click(function(e){
+       e.preventDefault();
+       $("#formLogIn").slideToggle('slow');
+       $("#formSignUp").slideToggle('slow');
+    });
 
 });
 
