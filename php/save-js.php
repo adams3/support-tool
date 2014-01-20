@@ -1,11 +1,26 @@
 <?php
-$jsFile = $_POST["filename"];
 
-$js = $_POST["message"];
-$fh = fopen($jsFile,'w+') or die("can't open file");
-fwrite($fh, $js);
-fclose($fh);
+if ($_POST) {
 
-header('Content-Type: application/json');
-echo 1;
+    var_dump($_POST);die;
+
+    $jsFile = $_POST["filename"];
+    $userId = $_POST["userId"];
+    $formId = $_POST["formId"];
+    $path = 'config/' . $userId .'/' . $formId;
+
+
+    var_dump($path);die;
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
+
+    $js = $_POST["message"];
+    $fh = fopen($path, 'w+') or die("can't open file");
+    fwrite($fh, $js);
+    fclose($fh);
+
+    header('Content-Type: application/json');
+    echo 1;
+}
 ?>

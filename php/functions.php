@@ -103,3 +103,13 @@ function saveFormConfig ($data) {
     }
 
 }
+
+function getFormById($id) {
+    try {
+        $result = dibi::query("SELECT config FROM `hd_form` WHERE id = $id");
+        $row = $result->fetchAll();
+        return $row[0];
+    } catch (DibiException $e) {
+        die($e);
+    }
+}

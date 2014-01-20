@@ -6,12 +6,24 @@ var lastButtonNumber = 0;
 
 var bootstrapJs = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js";
 var bootstrapCss = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css";
-var filename = "config/helpdesk-form.js";
+var filename = "helpdesk-form.js";
+var address = "";
+var userId = 0; //hash
+var formId = 0; //hash
+var originalFormId = 0;
 
 $(function() {
 
-    $.getJSON("config/configureForm.json", function(data) {
-        var parsed = $.parseJSON(data.form);
+
+    var split = location.search.replace('?', '').split('=')
+    $.getJSON("get-form.php", {"formId" : split[1]}, function(data) {
+
+        originalFormId = split[1];
+        userId = data.userId;
+        formId = data.formId;
+        address = "config/" + userId + "/" + formId + "/" + filename;
+
+        var parsed = data.form;
         for (var index in parsed) {
             $('input').each(function() {
                 if ($(this).attr('name') == index) {
@@ -78,8 +90,12 @@ $(function() {
         var sendArray = $(this).serializeArray();
         var parsed = null;
 
-        $.post('save-form.php', sendArray, function(data) {
+        $.post('save-form.php', {form : sendArray, formId : originalFormId }, function(data) {
+//            parsed = data.form;
+
+// NEFUNGUJE!!!!! ide o form sendArray nejako sa to jebe
             parsed = data.form;
+            console.log(parsed['row']);
             var rows = parsed['row'];
 
             var buttons = parsed['button'];
@@ -197,10 +213,10 @@ $(function() {
             var modalForm = '$("body").append(\'' + form + '\');' + '$("#domain").val(window.location.hostname);' + ajaxSubmit;
             var bootstrapSource = '<link href="' + bootstrapCss + '" rel="stylesheet">\n<script src="' + bootstrapJs + '"></script>';
             var copiableScript = bootstrapSource + '\n' + '<script>\n' + supportButton + modalForm + '\n</script>';
-            var formSrc = '\n<script src="' + 'http://' + window.location.hostname + '/' + filename + '"></script>';
+            var formSrc = '\n<script src="' + 'http://' + window.location.hostname + '/' + address + '"></script>';
             var copiableScript2 = bootstrapSource + formSrc;
 
-            $.post('save-js.php', {message: supportButton + modalForm, filename: filename});
+            $.post('save-js.php', {message: supportButton + modalForm, filename: filename, userId : userId ,formId : formId});
 
             $copyMe.find('textarea').val(copiableScript2);
             $copyMeAdvanced.find('textarea').val(copiableScript);

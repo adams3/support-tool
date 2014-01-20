@@ -38,7 +38,6 @@ if ($_POST["submit"] == "register") {
 }
 
 if (!isset($_SESSION["user_id"]) || !isset($_SESSION["email"])) {
-    die;
     header("location:index.php");
     exit();
 }
