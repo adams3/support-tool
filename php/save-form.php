@@ -1,13 +1,21 @@
 <?php
-$configFile = "config/configureForm.json";
+include "functions.php";
+session_start();
 
-$json = json_decode(file_get_contents($configFile), true);
-$json["form"] = json_encode($_POST);
+$json = array();
 
-$fh = fopen($configFile,'w+') or die("can't open file");
-fwrite($fh, json_encode($json));
-fclose($fh);
+if($_POST) {
+    $json["form"] = $_POST;
+
+    $data = array();
+    $data["config"] = json_encode($json);
+    $data["user_id"] = $_SESSION["user_id"];
+
+    if(!saveFormConfig($data)) {
+        $data["config"] = "error";
+    }
+}
 
 header('Content-Type: application/json');
-echo file_get_contents(($configFile), true);
+echo $data["config"];
 ?>

@@ -6,7 +6,7 @@ session_start();
 if ( $_POST["submit"] == "login" && $_POST["email"] && $_POST["password"]) {
     $user = login($_POST["email"], $_POST["password"]);
     if ($user) {
-        $_SESSION["id"] = $user["id"];
+        $_SESSION["user_id"] = $user["id"];
         $_SESSION["email"] = $user["email"];
     } else {
         header("location:index.php?success=false");
@@ -20,6 +20,8 @@ TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zme
  config zatial bude robit len advanced, potom sa tam musi vlozit do adresara ktory sa bude volat /md5(customer_ID)/md5(form_ID)/helpdeskForm.js
  je treba tabulka pre formular s customer id
  je treba tabulka hd_message customer_id + form_id
+ *
+ * jebnut niekde GET form_id asi vsade kde sa pracuje s form
 
  *
  *  */
@@ -35,7 +37,7 @@ if ($_POST["submit"] == "register") {
     exit();
 }
 
-if (!isset($_SESSION["id"]) || !isset($_SESSION["email"])) {
+if (!isset($_SESSION["user_id"]) || !isset($_SESSION["email"])) {
     die;
     header("location:index.php");
     exit();

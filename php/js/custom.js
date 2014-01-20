@@ -79,8 +79,9 @@ $(function() {
         var parsed = null;
 
         $.post('save-form.php', sendArray, function(data) {
-            parsed = $.parseJSON(data.form);
+            parsed = data.form;
             var rows = parsed['row'];
+
             var buttons = parsed['button'];
 
             var $confirmedDiv = $('<div id="confirmed" class="display-none">');

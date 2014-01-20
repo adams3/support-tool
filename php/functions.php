@@ -83,3 +83,23 @@ function register($data) {
         return false;
     }
 }
+
+function saveFormConfig ($data) {
+    try {
+        $id = $data["id"];
+        unset($data["id"]);
+        $result = dibi::query("SELECT id FROM `hd_form` WHERE id = $id");
+        $row = $result->fetchAll();
+
+        if($row) {
+            dibi::query('UPDATE hd_form SET', $data, 'WHERE id = %i', $id);
+        } else {
+            dibi::query('INSERT INTO `hd_form`', $data);
+        }
+
+        return true;
+    } catch (DibiException $e) {
+        return false;
+    }
+
+}
