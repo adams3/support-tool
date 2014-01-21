@@ -2,7 +2,7 @@
 
 if ($_POST) {
 
-    var_dump($_POST);die;
+//    var_dump($_POST);die;
 
     $jsFile = $_POST["filename"];
     $userId = $_POST["userId"];
@@ -10,12 +10,12 @@ if ($_POST) {
     $path = 'config/' . $userId .'/' . $formId;
 
 
-    var_dump($path);die;
     if (!file_exists($path)) {
         mkdir($path, 0777, true);
     }
 
     $js = $_POST["message"];
+    $path .= "/" . $jsFile;
     $fh = fopen($path, 'w+') or die("can't open file");
     fwrite($fh, $js);
     fclose($fh);

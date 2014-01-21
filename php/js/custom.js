@@ -14,7 +14,6 @@ var originalFormId = 0;
 
 $(function() {
 
-
     var split = location.search.replace('?', '').split('=')
     $.getJSON("get-form.php", {"formId" : split[1]}, function(data) {
 
@@ -88,14 +87,11 @@ $(function() {
 
         e.preventDefault();
         var sendArray = $(this).serializeArray();
+        sendArray.push({name : "formId", value : originalFormId});
         var parsed = null;
 
-        $.post('save-form.php', {form : sendArray, formId : originalFormId }, function(data) {
-//            parsed = data.form;
-
-// NEFUNGUJE!!!!! ide o form sendArray nejako sa to jebe
+        $.post('save-form.php', sendArray, function(data) {
             parsed = data.form;
-            console.log(parsed['row']);
             var rows = parsed['row'];
 
             var buttons = parsed['button'];
@@ -239,6 +235,7 @@ $(function() {
         //checkboxy nastylovat v gride
         // nahrat to na openshift a vytvorit databazu a nejake test web...
         //napriklad /test na rovnakej domene.
+
 
         $('#supportForm').toggle('slow', function() {
             $('#confirmed').toggle('slow');

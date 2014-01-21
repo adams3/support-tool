@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION["id"]) && isset($_SESSION["email"])) {
+if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
     header("location:main.php");
     exit();
 }

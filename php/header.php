@@ -18,10 +18,9 @@ if ( $_POST["submit"] == "login" && $_POST["email"] && $_POST["password"]) {
 TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zmena hesla a poslanie na email
  nadstavba formularov
  config zatial bude robit len advanced, potom sa tam musi vlozit do adresara ktory sa bude volat /md5(customer_ID)/md5(form_ID)/helpdeskForm.js
- je treba tabulka pre formular s customer id
  je treba tabulka hd_message customer_id + form_id
  *
- * jebnut niekde GET form_id asi vsade kde sa pracuje s form
+    je treba urobit jqgrid pre formulare.
 
  *
  *  */
