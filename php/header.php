@@ -20,7 +20,19 @@ TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zme
  config zatial bude robit len advanced, potom sa tam musi vlozit do adresara ktory sa bude volat /md5(customer_ID)/md5(form_ID)/helpdeskForm.js
  je treba tabulka hd_message customer_id + form_id
  *
-    je treba urobit jqgrid pre formulare.
+
+        //TODO: nastylovat trosku ten clipboard
+        //checkboxy nastylovat v gride
+        // nahrat to na openshift a vytvorit databazu a nejake test web...
+        //napriklad /test na rovnakej domene.
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //Pripojit userId a form-id k scriptu pretoze je to potreba ulozit do DB
+
+pri konfiguracii formulara treba vlozit domain
+ *
+ * urobit nejaky authenticate.php kde bude overovat prihlasenie a vsade si ho includovat.
+ *
+ * z formularu sa treba vratit spat na vypis
 
  *
  *  */
@@ -61,7 +73,7 @@ if ($uri == "/mails.php") {
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Support Form Maker</title>
+        <title>Helpdesk Form Maker</title>
 
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
@@ -96,11 +108,12 @@ if ($uri == "/mails.php") {
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand" href="/">Support Form Admin</a>
+                    <a class="navbar-brand" href="/">Helpdesk Administration</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="<?php echo $a1; ?>"><a href="/">Form Maker</a></li>
+                        <li class="<?php echo $a1; ?>"><a href="/forms.php">My forms <span class="badge"><?php echo getNumberOfUnread() ?></span></a></li>
                         <li class="<?php echo $a1; ?>"><a href="/mails.php">Customer queries <span class="badge"><?php echo getNumberOfUnread() ?></span></a></li>
                         <li class="<?php echo $a1; ?>"><a href="/reply.php">New message</a></li>
 <!--                        <li class="dropdown <?php echo $a2; ?>">

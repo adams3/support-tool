@@ -2,6 +2,9 @@
 
 include 'database.php';
 
+session_start();
+$userId = $_SESSION["user_id"];
+
 $page = $_GET['page'];
 $limit = $_GET['rows'];
 $sidx = $_GET['sidx'];
@@ -9,7 +12,7 @@ $sord = $_GET['sord'];
 if (!$sidx)
     $sidx = 1;
 
-$result = dibi::query('SELECT COUNT(*) AS count FROM `hd_message`');
+$result = dibi::query("SELECT COUNT(*) AS count FROM `hd_form` WHERE user_id = $userId ");
 $count = $result->fetchSingle();
 
 
@@ -35,7 +38,7 @@ if ($start < 0)
     $start = 0;
 
 // the actual query for the grid data
-$SQL = "SELECT * FROM hd_message ORDER BY $sidx $sord LIMIT $start , $limit";
+$SQL = "SELECT * FROM hd_form WHERE user_id = $userId ORDER BY $sidx $sord LIMIT $start , $limit";
 
 
 try {
@@ -49,17 +52,13 @@ $rowsArr = array();
 foreach ($rows as $i => $row) {
     $rowsArr[$i]["id"] = $i;
     $rowsArr[$i]["cell"][] = $row["id"];
-    $rowsArr[$i]["cell"][] = date("d.m.Y H:i:s", strtotime($row["date_create"]));
-    $message = (array) json_decode($row["message"]);
-    $formatedMessage = "";
-    foreach($message as $key => $input) {
-        $formatedMessage .= $key . " : " . $input . "\n" ;
-    }
-    $rowsArr[$i]["cell"][] = $formatedMessage;
 
-    $rowsArr[$i]["cell"][] = $row["read"];
-    $rowsArr[$i]["cell"][] = $row["flag"];
-    $rowsArr[$i]["cell"][] = $row["replied"];
+    $config = (array) json_decode($row["config"]);
+    $form = (array)$config["form"];
+
+    $rowsArr[$i]["cell"][] = $form["form-action"];
+    $rowsArr[$i]["cell"][] = "www.google.com";
+//    $rowsArr[$i]["cell"][] = $form["domain"];
 }
 
 $resultArr = array();

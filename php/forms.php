@@ -2,8 +2,8 @@
 require_once 'header.php';
 ?>
 
-<div id="mails">
-    <table id="jqGridMails"></table>
+<div id="forms">
+    <table id="jqGridForms"></table>
     <div id="pager"></div>
 </div>
 

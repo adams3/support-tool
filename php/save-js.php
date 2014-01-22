@@ -2,12 +2,11 @@
 
 if ($_POST) {
 
-//    var_dump($_POST);die;
 
     $jsFile = $_POST["filename"];
-    $userId = $_POST["userId"];
-    $formId = $_POST["formId"];
-    $path = 'config/' . $userId .'/' . $formId;
+    $hashUserId = $_POST["hashUserId"];
+    $hashFormId = $_POST["hashFormId"];
+    $path = 'config/' . $hashUserId .'/' . $hashFormId;
 
 
     if (!file_exists($path)) {
