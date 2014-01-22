@@ -8,8 +8,9 @@ var bootstrapJs = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js
 var bootstrapCss = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css";
 var filename = "helpdesk-form.js";
 var address = "";
-var userId = 0; //hash
-var formId = 0; //hash
+var hashUserId = 0; //hash
+var hashFormId = 0; //hash
+var originalUserId = 0;
 var originalFormId = 0;
 
 $(function() {
@@ -17,10 +18,11 @@ $(function() {
     var split = location.search.replace('?', '').split('=')
     $.getJSON("get-form.php", {"formId" : split[1]}, function(data) {
 
-        originalFormId = split[1];
-        userId = data.userId;
-        formId = data.formId;
-        address = "config/" + userId + "/" + formId + "/" + filename;
+        originalUserId = data.userId;;
+        originalFormId = data.formId;;
+        hashUserId = data.hashUserId;
+        hashFormId = data.hashFormId;
+        address = "config/" + hashUserId + "/" + hashFormId + "/" + filename;
 
         var parsed = data.form;
         for (var index in parsed) {
@@ -212,7 +214,7 @@ $(function() {
             var formSrc = '\n<script src="' + 'http://' + window.location.hostname + '/' + address + '"></script>';
             var copiableScript2 = bootstrapSource + formSrc;
 
-            $.post('save-js.php', {message: supportButton + modalForm, filename: filename, userId : userId ,formId : formId});
+            $.post('save-js.php', {message: supportButton + modalForm, filename: filename, userId : hashUserId ,formId : hashFormId});
 
             $copyMe.find('textarea').val(copiableScript2);
             $copyMeAdvanced.find('textarea').val(copiableScript);
@@ -230,12 +232,6 @@ $(function() {
 
 
         }, 'json');
-
-        //TODO: nastylovat trosku ten clipboard
-        //checkboxy nastylovat v gride
-        // nahrat to na openshift a vytvorit databazu a nejake test web...
-        //napriklad /test na rovnakej domene.
-
 
         $('#supportForm').toggle('slow', function() {
             $('#confirmed').toggle('slow');
@@ -263,7 +259,7 @@ $(function() {
 ////////////////////////////GRID ///////////////////////////////
 
     $("#jqGridMails").jqGrid({
-    url: "grid.php",
+    url: "grid-mails.php",
             datatype: "json",
             height: $(window).height() - 220,
             mtype: "GET",
@@ -293,8 +289,32 @@ $(function() {
             onSelectRow: handleSelectedRow
     });
 
+        $("#jqGridForms").jqGrid({
+            url: "grid-forms.php",
+            datatype: "json",
+            height: $(window).height() - 220,
+            mtype: "GET",
+            colNames: ["ID", "Form Action", "Domain", "Action"],
+            colModel: [
+            {name: "id", width: 55},
+            {name: "form-action", width: 80, formatter: 'text', align: "left"},
+            {name: "domain", width: 80, formatter: 'text', align: "left"},
+            {name: "action", widt: 40, formatter: config_formatter, align: "center"}
+            ],
+            pager: "#pager",
+            rowNum: 20,
+            rowList: [10, 20, 30],
+            sortname: "id",
+            sortorder: "desc",
+            viewrecords: true,
+            gridview: true,
+            autoencode: true,
+            caption: "Configured forms"
+    });
+
     $(window).bind('resize', function() {
         $("#jqGridMails").setGridWidth($('#mails').width(), true);
+        $("#jqGridForms").setGridWidth($('#forms').width(), true);
     }).trigger('resize');
 
     $("#notRegistered, #backToLogin").click(function(e){
@@ -310,6 +330,10 @@ $(function() {
 
 function reply_formatter(cellvalue, options, rowObject) {
     return '<a href="reply.php?id=' + rowObject[0] + '">Reply</a>';
+}
+
+function config_formatter(cellvalue, options, rowObject) {
+    return '<a href="main.php?id=' + rowObject[0] + '">Config the form</a>';
 }
 
 function handleSelectedRow(rowId, status, e) {
