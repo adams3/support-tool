@@ -4,12 +4,16 @@ header('Access-Control-Allow-Origin: *');
 include 'functions.php';
 
 $domain = $_POST["domain"];
+$userId = $_POST["userId"];
+$formId = $_POST["formId"];
 $values = $_POST;
 unset($values["domain"]);
 $arr = array(
     'date_create%sql' => 'NOW()',
     'message' => json_encode($values),
-    'domain' => $domain
+    'domain' => $domain,
+    'user_id' => $userId,
+    'form_id' => $formId
 );
 
 insertRow($arr);

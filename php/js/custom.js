@@ -7,6 +7,7 @@ var lastButtonNumber = 0;
 var bootstrapJs = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js";
 var bootstrapCss = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css";
 var filename = "helpdesk-form.js";
+var submit = "/submit.php"
 var address = "";
 var hashUserId = 0; //hash
 var hashFormId = 0; //hash
@@ -14,6 +15,10 @@ var originalUserId = 0;
 var originalFormId = 0;
 
 $(function() {
+
+    if($('#directUrl').length) {
+        $('#directUrl').val("http://" + window.location.hostname + submit);
+    }
 
     var split = location.search.replace('?', '').split('=')
     $.getJSON("get-form.php", {"formId" : split[1]}, function(data) {
@@ -121,6 +126,18 @@ $(function() {
             $('div.modal-body').append($form);
             $form.append('<input id="domain" name="domain" type="hidden" />');
             $form.append('<div id="alertMessage" class="alert" style="display:none;"></div>');
+
+            var $inputFormId = $(document.createElement('input'));
+            $inputFormId.attr('type', 'hidden');
+            $inputFormId.attr('name', 'formId');
+            $inputFormId.val(formId);
+            $form.append($inputFormId);
+
+            var $inputUserId = $(document.createElement('input'));
+            $inputUserId.attr('type', 'hidden');
+            $inputUserId.attr('name', 'userId');
+            $inputUserId.val(userId);
+            $form.append($inputUserId);
 
             /*********** ROWS **********/
             for (var i in rows) {
@@ -333,7 +350,7 @@ function reply_formatter(cellvalue, options, rowObject) {
 }
 
 function config_formatter(cellvalue, options, rowObject) {
-    return '<a href="main.php?id=' + rowObject[0] + '">Config the form</a>';
+    return '<a href="form.php?id=' + rowObject[0] + '">Config the form</a>';
 }
 
 function handleSelectedRow(rowId, status, e) {

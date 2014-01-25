@@ -57,8 +57,7 @@ foreach ($rows as $i => $row) {
     $form = (array)$config["form"];
 
     $rowsArr[$i]["cell"][] = $form["form-action"];
-    $rowsArr[$i]["cell"][] = "www.google.com";
-//    $rowsArr[$i]["cell"][] = $form["domain"];
+    $rowsArr[$i]["cell"][] = $form["domain"];
 }
 
 $resultArr = array();

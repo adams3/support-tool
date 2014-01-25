@@ -28,7 +28,8 @@ TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zme
         //!!!!!!!!!!!!!!!!!!!!!!!!!!
         //Pripojit userId a form-id k scriptu pretoze je to potreba ulozit do DB
 
-pri konfiguracii formulara treba vlozit domain
+!!! pri konfiguracii formulara treba vlozit domain
+ * upravit vypis a ukladanie sprav podla id zakaznika a formulara
  *
  * urobit nejaky authenticate.php kde bude overovat prihlasenie a vsade si ho includovat.
  *
@@ -108,11 +109,11 @@ if ($uri == "/mails.php") {
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand" href="/">Helpdesk Administration</a>
+                    <a class="navbar-brand" href="main.php">Helpdesk Administration</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="<?php echo $a1; ?>"><a href="/">Form Maker</a></li>
+                        <li class="<?php echo $a1; ?>"><a href="/form.php">New Form</a></li>
                         <li class="<?php echo $a1; ?>"><a href="/forms.php">My forms <span class="badge"><?php echo getNumberOfUnread() ?></span></a></li>
                         <li class="<?php echo $a1; ?>"><a href="/mails.php">Customer queries <span class="badge"><?php echo getNumberOfUnread() ?></span></a></li>
                         <li class="<?php echo $a1; ?>"><a href="/reply.php">New message</a></li>
