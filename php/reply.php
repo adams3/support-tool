@@ -15,7 +15,7 @@ if ($_GET["id"]) {
     markMessageAsRead((int) $id);
 
     $rowString = "\n\n------------------------------------------------------------------------------\n";
-    $informMessage = "Your message from: ";
+    $informMessage = "Customer Message from: ";
 
     if ($row["replied"]) {
         $informMessage = "Administrator reply from: ";
@@ -56,6 +56,12 @@ if ($sent == "success") {
     echo '<div class="alert alert-danger">Oh snap! There was an error while sending this message.</div>';
 }
 ?>
+<div class="page-header mt0">
+  <h1><?php if($_GET){ echo "Reply to customer <small>Your reply will be saved</small>"; } else { echo "Send an email <small>Your email message will not be saved</small>"; } ?>
+
+  </h1>
+</div>
+<?php if($_GET){ echo '<a href="/mails.php"><button id="goBack" class="mb20 btn btn-primary " type="button">Back to Query List</button></a>'; } ?>
 
 <div class="well well-new">
     <form id="replyForm" class="form-horizontal" name="reply-form" role="form" action="reply-submit.php" method="post">

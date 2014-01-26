@@ -16,24 +16,16 @@ if ( $_POST["submit"] == "login" && $_POST["email"] && $_POST["password"]) {
 
 /*
 TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zmena hesla a poslanie na email
- nadstavba formularov
- config zatial bude robit len advanced, potom sa tam musi vlozit do adresara ktory sa bude volat /md5(customer_ID)/md5(form_ID)/helpdeskForm.js
- je treba tabulka hd_message customer_id + form_id
- *
 
         //TODO: nastylovat trosku ten clipboard
         //checkboxy nastylovat v gride
         // nahrat to na openshift a vytvorit databazu a nejake test web...
         //napriklad /test na rovnakej domene.
         //!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //Pripojit userId a form-id k scriptu pretoze je to potreba ulozit do DB
 
-!!! pri konfiguracii formulara treba vlozit domain
- * upravit vypis a ukladanie sprav podla id zakaznika a formulara
- *
+
  * urobit nejaky authenticate.php kde bude overovat prihlasenie a vsade si ho includovat.
- *
- * z formularu sa treba vratit spat na vypis
+ * delete form or email, active form
 
  *
  *  */
@@ -58,11 +50,17 @@ if (!isset($_SESSION["user_id"]) || !isset($_SESSION["email"])) {
 $uri = $_SERVER["REQUEST_URI"];
 $a1 = "";
 $a2 = "";
-if ($uri == "/main.php") {
+if ($uri == "/form.php") {
     $a1 = "active";
 }
-if ($uri == "/mails.php") {
+if ($uri == "/forms.php") {
     $a2 = "active";
+}
+if ($uri == "/mails.php") {
+    $a3 = "active";
+}
+if ($uri == "/reply.php") {
+    $a4 = "active";
 }
 ?>
 
@@ -114,9 +112,9 @@ if ($uri == "/mails.php") {
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="<?php echo $a1; ?>"><a href="/form.php">New Form</a></li>
-                        <li class="<?php echo $a1; ?>"><a href="/forms.php">My forms <span class="badge"><?php echo getNumberOfUnread() ?></span></a></li>
-                        <li class="<?php echo $a1; ?>"><a href="/mails.php">Customer queries <span class="badge"><?php echo getNumberOfUnread() ?></span></a></li>
-                        <li class="<?php echo $a1; ?>"><a href="/reply.php">New message</a></li>
+                        <li class="<?php echo $a2; ?>"><a href="/forms.php">My forms <span class="badge"><?php echo getNumberOfForms($_SESSION["user_id"]) ?></span></a></li>
+                        <li class="<?php echo $a3; ?>"><a href="/mails.php">Customer queries <span class="badge"><?php echo getNumberOfUnread($_SESSION["user_id"]) ?></span></a></li>
+                        <li class="<?php echo $a4; ?>"><a href="/reply.php">New message</a></li>
 <!--                        <li class="dropdown <?php echo $a2; ?>">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpdesk<b class="caret"></b></a>
                             <ul class="dropdown-menu">

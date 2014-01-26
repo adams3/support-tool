@@ -2,12 +2,10 @@
 
 if ($_POST) {
 
-
     $jsFile = $_POST["filename"];
     $hashUserId = $_POST["hashUserId"];
     $hashFormId = $_POST["hashFormId"];
     $path = 'config/' . $hashUserId .'/' . $hashFormId;
-
 
     if (!file_exists($path)) {
         mkdir($path, 0777, true);

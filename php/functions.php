@@ -7,8 +7,8 @@ function isJson($string) {
     return (json_last_error() == JSON_ERROR_NONE);
 }
 
-function getNumberOfUnread() {
-    $SQL = "SELECT * FROM hd_message WHERE `read` = 0";
+function getNumberOfUnread($userId) {
+    $SQL = "SELECT * FROM hd_message WHERE `read` = 0 AND user_id = $userId";
 
     try {
         $result = dibi::query($SQL);
@@ -16,6 +16,20 @@ function getNumberOfUnread() {
         return count($row);
     } catch (DibiException $e) {
         var_dump($e);
+        die;
+    }
+}
+
+function getNumberOfForms($userId) {
+    $SQL = "SELECT * FROM hd_form WHERE user_id = $userId";
+
+    try {
+        $result = dibi::query($SQL);
+        $row = $result->fetchAll();
+        return count($row);
+    } catch (DibiException $e) {
+        var_dump($e);
+        die;
     }
 }
 
@@ -94,10 +108,11 @@ function saveFormConfig ($data) {
         if($row) {
             dibi::query('UPDATE hd_form SET', $data, 'WHERE id = %i', $id);
         } else {
-            dibi::query('INSERT INTO `hd_form`', $data);
+            $res = dibi::query('INSERT INTO `hd_form`', $data);
+            $id = dibi::getInsertId();
         }
 
-        return true;
+        return $id;
     } catch (DibiException $e) {
         return false;
     }

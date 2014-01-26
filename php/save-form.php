@@ -14,11 +14,34 @@ if($_POST) {
     $data["config"] = json_encode($json);
     $data["user_id"] = $_SESSION["user_id"];
 
-    if(!saveFormConfig($data)) {
+    $formId = saveFormConfig($data);
+
+    if(!$formId) {
         $data["config"] = "error";
     }
+
+//$data["config"]["new"] = "true";
+
+    $jsonArr = $data["config"];
+
+
+    //nacpat new do formulara!!!!!!!!!!!!!!!!!
+
+
+//    $jsonArr->formId = $formId;
+
+//    var_dump($formId);die;
+
+
+//    if($formId == $data["id"]) {
+//        $jsonArr->new = "true";
+//    } else {
+//        $jsonArr->new = "false";
+//    }
+
+
 }
 
 header('Content-Type: application/json');
-echo $data["config"];
+echo $jsonArr;
 ?>

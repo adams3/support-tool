@@ -16,15 +16,11 @@ var originalFormId = 0;
 
 $(function() {
 
-    if($('#directUrl').length) {
-        $('#directUrl').val("http://" + window.location.hostname + submit);
-    }
-
     var split = location.search.replace('?', '').split('=')
     $.getJSON("get-form.php", {"formId" : split[1]}, function(data) {
 
-        originalUserId = data.userId;;
-        originalFormId = data.formId;;
+        originalUserId = data.userId;
+        originalFormId = data.formId;
         hashUserId = data.hashUserId;
         hashFormId = data.hashFormId;
         address = "config/" + hashUserId + "/" + hashFormId + "/" + filename;
@@ -36,6 +32,11 @@ $(function() {
                     $(this).val(parsed[index]);
                 }
             });
+        }
+
+        //can be removed if submit field is visible
+        if($('#directUrl').length > 0) {
+            $('#directUrl').val("http://" + window.location.hostname + submit);
         }
 
         var rows = parsed['row'];
@@ -101,11 +102,21 @@ $(function() {
             parsed = data.form;
             var rows = parsed['row'];
 
+//            originalUserId = data.userId;
+//            originalFormId = data.formId;
+//            hashUserId = data.hashUserId;
+//            hashFormId = data.hashFormId;
+//            address = "config/" + hashUserId + "/" + hashFormId + "/" + filename;
+
+//potrebujem len zistit ci je nova, ak ano tak presmerujem na ?id=NoveId&save=new
+
+//console.log(data.new);
+
             var buttons = parsed['button'];
 
             var $confirmedDiv = $('<div id="confirmed" class="display-none">');
             var $modalDiv = $('<div id="sp-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></div><div class="modal-body"></div></div></div></div>');
-            var $goBackButton = $('<button id="goBack" onclick="toggleBack()" class="btn btn-primary" type="button">Back to form config</button>');
+            var $goBackButton = $('<button id="goBack" onclick="toggleBack()" class="btn btn-primary" type="button">Back to form configuration</button>');
             var $copyMe = $('<div id="copyMe" class="tab-pane fade in active"><button id="copyButton" type="button" class="btn btn-info" data-clipboard-target="copyText">Copy to clipboard</button><textarea id="copyText" class="form-control" rows="3" readonly></textarea></div>');
             var $copyMeAdvanced = $('<div id="copyMeAdvanced" class="tab-pane fade in"><button id="copyButtonAdvanced" type="button" class="btn btn-info" data-clipboard-target="copyTextAdvanced">Copy to clipboard</button><textarea id="copyTextAdvanced" class="form-control" rows="10" readonly></textarea></div>');
             var $tabs = $('<ul id="myTab" class="nav nav-tabs"><li class="active"><a href="#copyMe" data-toggle="tab">Basic copiable script</a></li><li><a href="#copyMeAdvanced" data-toggle="tab">Advanced copiable script</a></li></ul></li></ul>')
@@ -130,13 +141,13 @@ $(function() {
             var $inputFormId = $(document.createElement('input'));
             $inputFormId.attr('type', 'hidden');
             $inputFormId.attr('name', 'formId');
-            $inputFormId.val(formId);
+            $inputFormId.val(originalFormId);
             $form.append($inputFormId);
 
             var $inputUserId = $(document.createElement('input'));
             $inputUserId.attr('type', 'hidden');
             $inputUserId.attr('name', 'userId');
-            $inputUserId.val(userId);
+            $inputUserId.val(originalUserId);
             $form.append($inputUserId);
 
             /*********** ROWS **********/
@@ -231,7 +242,7 @@ $(function() {
             var formSrc = '\n<script src="' + 'http://' + window.location.hostname + '/' + address + '"></script>';
             var copiableScript2 = bootstrapSource + formSrc;
 
-            $.post('save-js.php', {message: supportButton + modalForm, filename: filename, userId : hashUserId ,formId : hashFormId});
+            $.post('save-js.php', {message: supportButton + modalForm, filename: filename, hashUserId : hashUserId ,hashFormId : hashFormId});
 
             $copyMe.find('textarea').val(copiableScript2);
             $copyMeAdvanced.find('textarea').val(copiableScript);
@@ -247,6 +258,11 @@ $(function() {
                 });
             });
 
+
+
+//            if($new) {
+//                window.location = window.location.origin + '/form.php?id=' + $formId;
+//            }
 
         }, 'json');
 
@@ -280,7 +296,7 @@ $(function() {
             datatype: "json",
             height: $(window).height() - 220,
             mtype: "GET",
-            colNames: ["ID", "Date Create", "Message", "Read", "Flag", "Replied", "Action"],
+            colNames: ["ID", "Date Create", "Message", "Form Name", "Read", "Flag", "Replied", "Action"],
             colModel: [
             {name: "id", width: 55},
             {name: "date_create", formatter: 'date', formatoptions: {srcformat: "d.m.Y H:i:s", newformat: "d.m.Y H:i:s"}, width: 200},
@@ -289,6 +305,7 @@ $(function() {
                         return '<div class="mh50">' + v + '</div>';
                     }
             },
+            {name: "form-action", formatter: 'text', width: 200},
             {name: "read", width: 80, formatter: 'checkbox', align: "center"},
             {name: "flag", width: 80, formatter: 'checkbox', align: "center"},
             {name: "replied", width: 80, formatter: 'checkbox', align: "center"},

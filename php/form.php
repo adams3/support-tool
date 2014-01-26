@@ -3,17 +3,11 @@ require_once 'header.php';
 ?>
 
 
-<!-- Main component for a primary marketing message or call to action -->
-<div class="">
-    <h1>Edit Your Form</h1>
-    <!--<p>
-        <a class="btn btn-lg btn-primary" href="#">View navbar docs &raquo;</a>
-    </p>-->
+<div class="page-header mt0">
+  <h1><?php if($_GET){ echo "Edit form"; } else { echo "Create new form"; } ?> <small>Here you can add/remove/edit your form elements</small></h1>
 </div>
+<?php if($_GET){ echo '<a href="/forms.php"><button id="goBack" class="btn btn-primary mb20" type="button">Back to Form List</button></a>'; } ?>
 <div class="well well-new">
-
-
-
     <form id="supportForm" class="form-horizontal" name="config-form" role="form" action="save-form.php" method="post">
         <div class="center">
             <div class=" col-md-12 no-pl">
@@ -169,7 +163,7 @@ require_once 'header.php';
 
 <div class="add mt15">
     <div class=" col-md-12 no-pl">
-        <button id="addNewButton" type="submit" class="btn btn-success">Add new input</button>
+        <button id="addNewButton" type="submit" class="btn btn-success">Add new button</button>
     </div>
 </div>
 
@@ -178,7 +172,7 @@ require_once 'header.php';
 
 <div class="center mt15">
     <div class=" col-md-12 no-pl">
-        <button id="submitForm" type="submit" class="btn btn-primary">Submit & show form</button>
+        <button id="submitForm" type="submit" class="btn btn-primary">Save and show form</button>
     </div>
 </div>
 </form>

@@ -2,6 +2,9 @@
 
 include 'database.php';
 
+session_start();
+$userId = $_SESSION["user_id"];
+
 $page = $_GET['page'];
 $limit = $_GET['rows'];
 $sidx = $_GET['sidx'];
@@ -35,7 +38,7 @@ if ($start < 0)
     $start = 0;
 
 // the actual query for the grid data
-$SQL = "SELECT * FROM hd_message ORDER BY $sidx $sord LIMIT $start , $limit";
+$SQL = "SELECT m.* , f.config FROM hd_message m LEFT JOIN hd_form f on f.id = m.form_id WHERE m.user_id = $userId ORDER BY m.$sidx $sord LIMIT $start , $limit";
 
 
 try {
@@ -43,6 +46,7 @@ try {
     $rows = $result->fetchAll();
 } catch (DibiException $e) {
     var_dump($e);
+    die;
 };
 
 $rowsArr = array();
@@ -56,6 +60,10 @@ foreach ($rows as $i => $row) {
         $formatedMessage .= $key . " : " . $input . "\n" ;
     }
     $rowsArr[$i]["cell"][] = $formatedMessage;
+
+    $config = (array) json_decode($row["config"]);
+    $form = (array)$config["form"];
+    $rowsArr[$i]["cell"][] = $form["form-action"];
 
     $rowsArr[$i]["cell"][] = $row["read"];
     $rowsArr[$i]["cell"][] = $row["flag"];
@@ -84,9 +92,9 @@ function fix_keys($array) {
     }
 }
 
-$arrrr = fix_keys($resultArr);
+$arrayValues = fix_keys($resultArr);
 
-$js = json_encode($arrrr);
+$js = json_encode($arrayValues);
 echo $js;
 
 ?>

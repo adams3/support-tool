@@ -7,7 +7,10 @@ $domain = $_POST["domain"];
 $userId = $_POST["userId"];
 $formId = $_POST["formId"];
 $values = $_POST;
+
 unset($values["domain"]);
+unset($values["userId"]);
+unset($values["formId"]);
 $arr = array(
     'date_create%sql' => 'NOW()',
     'message' => json_encode($values),
