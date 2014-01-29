@@ -3,7 +3,7 @@ include "functions.php";
 
 session_start();
 
-if ( $_POST["submit"] == "login" && $_POST["email"] && $_POST["password"]) {
+if ( isset($_POST["submit"]) && isset($_POST["email"]) && $_POST["submit"] == "login" && $_POST["email"] && $_POST["password"]) {
     $user = login($_POST["email"], $_POST["password"]);
     if ($user) {
         $_SESSION["user_id"] = $user["id"];
@@ -30,7 +30,7 @@ TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zme
  *
  *  */
 
-if ($_POST["submit"] == "register") {
+if ( isset($_POST["submit"]) && $_POST["submit"] == "register") {
     $data = $_POST;
     unset($data["submit"]);
     if(register($data)) {
@@ -50,6 +50,8 @@ if (!isset($_SESSION["user_id"]) || !isset($_SESSION["email"])) {
 $uri = $_SERVER["REQUEST_URI"];
 $a1 = "";
 $a2 = "";
+$a3 = "";
+$a4 = "";
 if ($uri == "/form.php") {
     $a1 = "active";
 }

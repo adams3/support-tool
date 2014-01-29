@@ -22,7 +22,7 @@ $options = array(
 try {
     dibi::connect($options);
 } catch (DibiException $e) {
-    echo"error db";
+    die("error db connection");
 };
 
 ?>

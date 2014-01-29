@@ -1,5 +1,4 @@
 <?php
-
 include 'database.php';
 
 function isJson($string) {
@@ -79,7 +78,7 @@ function login($email, $password) {
         $result = dibi::query("SELECT id, email, name, surname FROM `hd_user` WHERE email = '$email' AND password = '$password'");
         $row = $result->fetchAll();
     } catch (DibiException $e) {
-        die($e);
+        die("Whooops. Error occured. We are sorry.");
     }
     return $row[0];
 }

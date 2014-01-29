@@ -2,7 +2,10 @@
 require_once 'header.php';
 
 $rowString = "";
-$sent = $_GET["sent"];
+$sent = "";
+if(isset($_GET["sent"])) {
+    $sent = $_GET["sent"];
+}
 $configFile = "config/configureForm.json";
 
 $json = json_decode(file_get_contents($configFile), true);

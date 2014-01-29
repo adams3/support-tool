@@ -28,13 +28,13 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
             <form id="formLogIn" name="formLogIn" class="form-signin" method="post" action="main.php">
                 <h2 class="form-signin-heading">Log in</h2>
                 <?php
-                    if ($_GET["success"] == "false") {
+                    if (isset($_GET["success"]) && $_GET["success"] == "false") {
                         echo "<div class='alert alert-danger'>Log in was not successful</div>";
-                    } elseif ($_GET["success"] == "true") {
+                    } elseif (isset($_GET["success"]) && $_GET["success"] == "true") {
                         echo "<div class='alert alert-success'>Logout was successful</div>";
-                    } elseif ($_GET["success"] == "registered") {
+                    } elseif (isset($_GET["success"]) && $_GET["success"] == "registered") {
                         echo "<div class='alert alert-success'>Registration was successful.</div>";
-                    } elseif ($_GET["success"] == "exists") {
+                    } elseif (isset($_GET["success"]) && $_GET["success"] == "exists") {
                         echo "<div class='alert alert-danger'>Email \"" . $_GET["email"] . "\" already exists in our system. Log in please.<br><a href='#' id='forgotPassword'>Forgot password?</a></div>";
                     }
                 ?>
