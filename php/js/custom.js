@@ -16,7 +16,8 @@ var originalFormId = 0;
 
 $(function() {
 
-    var split = location.search.replace('?', '').split('=')
+    var split = location.search.replace('?', '').replace('&','=').split('=');
+    var isNew = split[3];
     $.getJSON("get-form.php", {"formId" : split[1]}, function(data) {
 
         originalUserId = data.userId;
@@ -56,6 +57,10 @@ $(function() {
             }
         } else {
             cloneElement(lastButtonNumber + 1, 'button');
+        }
+
+        if(isNew == "true"){
+            $('form#supportForm').submit();
         }
 
     }).fail(function() {
@@ -101,17 +106,6 @@ $(function() {
         $.post('save-form.php', sendArray, function(data) {
             parsed = data.form;
             var rows = parsed['row'];
-
-//            originalUserId = data.userId;
-//            originalFormId = data.formId;
-//            hashUserId = data.hashUserId;
-//            hashFormId = data.hashFormId;
-//            address = "config/" + hashUserId + "/" + hashFormId + "/" + filename;
-
-//potrebujem len zistit ci je nova, ak ano tak presmerujem na ?id=NoveId&save=new
-
-//console.log(data.new);
-
             var buttons = parsed['button'];
 
             var $confirmedDiv = $('<div id="confirmed" class="display-none">');
@@ -258,18 +252,16 @@ $(function() {
                 });
             });
 
+            if(data.new == "true") {
+                window.location = window.location.origin + '/form.php?id=' + data.formId +"&new=" + data.new;
+            }
 
-
-//            if($new) {
-//                window.location = window.location.origin + '/form.php?id=' + $formId;
-//            }
+            $('#supportForm').toggle('slow', function() {
+                $('#confirmed').toggle('slow');
+            });
 
         }, 'json');
-
-        $('#supportForm').toggle('slow', function() {
-            $('#confirmed').toggle('slow');
-        });
-
+        
     });
 
     $('input#reset').click(function(e) {

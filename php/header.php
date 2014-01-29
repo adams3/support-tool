@@ -25,7 +25,8 @@ TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zme
 
 
  * urobit nejaky authenticate.php kde bude overovat prihlasenie a vsade si ho includovat.
- * delete form or email, active form
+ * delete form or email dat priznak delete a len kontrolovat pri vypise ci je delete
+ * aktivne a neaktivne formulare?
 
  *
  *  */

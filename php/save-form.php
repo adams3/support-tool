@@ -20,28 +20,17 @@ if($_POST) {
         $data["config"] = "error";
     }
 
-//$data["config"]["new"] = "true";
+    $jsonArr = json_decode($data["config"]);
 
-    $jsonArr = $data["config"];
-
-
-    //nacpat new do formulara!!!!!!!!!!!!!!!!!
-
-
-//    $jsonArr->formId = $formId;
-
-//    var_dump($formId);die;
-
-
-//    if($formId == $data["id"]) {
-//        $jsonArr->new = "true";
-//    } else {
-//        $jsonArr->new = "false";
-//    }
-
-
+    if($formId == $data["id"]) {
+        $jsonArr->new = "false";
+    } else {
+        $jsonArr->new = "true";
+    }
+    $jsonArr->formId = $formId;
+    $json = json_encode($jsonArr);
 }
 
 header('Content-Type: application/json');
-echo $jsonArr;
+echo $json;
 ?>
