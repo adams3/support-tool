@@ -62,6 +62,15 @@ function updateRow($arr, $messageId) {
     }
 }
 
+function deleteMessage($messageId) {
+    try {
+        $arr = array("deleted" => 1);
+        dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $messageId);
+    } catch (DibiException $e) {
+        die($e);
+    }
+}
+
 function insertRow($arr) {
     try {
         dibi::query('INSERT INTO `hd_message`', $arr);
@@ -125,5 +134,22 @@ function getFormById($id) {
         return $row[0];
     } catch (DibiException $e) {
         die($e);
+    }
+}
+
+function fix_keys($array) {
+    $numberCheck = false;
+    foreach ($array as $k => $val) {
+        if (is_array($val)) {
+            $array[$k] = fix_keys($val); //recursion
+        }
+        if (is_numeric($k)) {
+            $numberCheck = true;
+        }
+    }
+    if ($numberCheck === true) {
+        return array_values($array);
+    } else {
+        return $array;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-include 'database.php';
+include 'functions.php';
 
 session_start();
 $userId = $_SESSION["user_id"];
@@ -75,22 +75,6 @@ $resultArr ["page"] = $page;
 $resultArr ["total"] = $total_pages;
 $resultArr ["records"] = $count;
 $resultArr ["rows"] = $rowsArr;
-
-function fix_keys($array) {
-    foreach ($array as $k => $val) {
-        if (is_array($val)) {
-            $array[$k] = fix_keys($val); //recursion
-        }
-        if (is_numeric($k)) {
-            $numberCheck = true;
-        }
-    }
-    if ($numberCheck === true) {
-        return array_values($array);
-    } else {
-        return $array;
-    }
-}
 
 $arrayValues = fix_keys($resultArr);
 

@@ -421,3 +421,7 @@ function cloneElement(rowNumber, type, data) {
     }
 
 }
+
+function deleteRow() {
+        $('#delete').trigger('click');
+}

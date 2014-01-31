@@ -3,28 +3,37 @@
 header('Access-Control-Allow-Origin: *');
 include 'functions.php';
 
-$domain = $_POST["domain"];
-$userId = $_POST["userId"];
-$formId = $_POST["formId"];
-$values = $_POST;
+if (isset($_POST)) {
 
-unset($values["domain"]);
-unset($values["userId"]);
-unset($values["formId"]);
-$arr = array(
-    'date_create%sql' => 'NOW()',
-    'message' => json_encode($values),
-    'domain' => $domain,
-    'user_id' => $userId,
-    'form_id' => $formId
-);
+    $domain = (isset($_POST["domain"]) ? $_POST["domain"] : "");
+    $userId = (isset($_POST["userId"]) ? $_POST["userId"] : "");
+    $formId = (isset($_POST["formId"]) ? $_POST["formId"] : "");
+    $values = $_POST;
 
-insertRow($arr);
+    unset($values["domain"]);
+    unset($values["userId"]);
+    unset($values["formId"]);
+    $arr = array(
+        'date_create%sql' => 'NOW()',
+        'message' => json_encode($values),
+        'domain' => $domain,
+        'user_id' => $userId,
+        'form_id' => $formId
+    );
 
-$retArr = array(
-    "class" => "alert-success",
-    "alertMessage" => "Great! The form has been successfully sent. You can close this window now."
-);
+    insertRow($arr);
+
+    $retArr = array(
+        "class" => "alert-success",
+        "alertMessage" => "Great! The form has been successfully sent. You can close this window now."
+    );
+} else {
+
+    $retArr = array(
+        "class" => "alert-danger",
+        "alertMessage" => "Oops. Something went wrong."
+    );
+}
 
 echo json_encode($retArr);
 ?>
