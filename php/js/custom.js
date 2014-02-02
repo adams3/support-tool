@@ -133,8 +133,8 @@ $(function() {
             var $header = $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + parsed['form-action'] + '</h4>');
             var $form = $('<form role="form" action=' + parsed['url'] + ' id="sp-support-forms">');
 
-            $('div.modal-header').append($header);
-            $('div.modal-body').append($form);
+            $('#sp-modal div.modal-header').append($header);
+            $('#sp-modal div.modal-body').append($form);
             $form.append('<input id="domain" name="domain" type="hidden" />');
             $form.append('<div id="alertMessage" class="alert" style="display:none;"></div>');
 
@@ -351,10 +351,27 @@ $(function() {
         $("#jqGridForms").setGridWidth($('#forms').width(), true);
     }).trigger('resize');
 
-    $("#notRegistered, #backToLogin").click(function(e){
+    $(".notRegistered").click(function(e){
        e.preventDefault();
        $("#formLogIn").slideToggle('slow');
        $("#formSignUp").slideToggle('slow');
+    });
+    
+    $(".backToLogin").click(function(e){
+       e.preventDefault();
+       if($("#formSignUp").is(":visible")) {
+           $("#formSignUp").slideToggle('slow');
+       }
+       if($("#formForgotPassword").is(":visible")) {
+           $("#formForgotPassword").slideToggle('slow');
+       }
+       $("#formLogIn").slideToggle('slow');
+    });
+    
+    $(".forgotPassword").click(function(e){
+       e.preventDefault();
+       $("#formLogIn").slideToggle('slow');
+       $("#formForgotPassword").slideToggle('slow');
     });
 
 });

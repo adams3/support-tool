@@ -1,5 +1,4 @@
 <?php
-
 require dirname(__FILE__) . '/../libs/dibi/dibi/dibi.php';
 
 $options = array(

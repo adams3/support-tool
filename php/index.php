@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
     header("location:main.php");
     exit();
@@ -34,8 +33,12 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
                         echo "<div class='alert alert-success'>Logout was successful</div>";
                     } elseif (isset($_GET["success"]) && $_GET["success"] == "registered") {
                         echo "<div class='alert alert-success'>Registration was successful.</div>";
+                    } elseif (isset($_GET["success"]) && $_GET["success"] == "changedPassword") {
+                        echo "<div class='alert alert-success'>Password was changed successfully. You should expect an email with new password to this address: \"" . $_GET["email"] . "\"</div>";
                     } elseif (isset($_GET["success"]) && $_GET["success"] == "exists") {
-                        echo "<div class='alert alert-danger'>Email \"" . $_GET["email"] . "\" already exists in our system. Log in please.<br><a href='#' id='forgotPassword'>Forgot password?</a></div>";
+                        echo "<div class='alert alert-danger'>Email \"" . $_GET["email"] . "\" already exists in our system. Log in please.<br><a href='#' class='forgotPassword'>Forgot password?</a></div>";
+                    } elseif (isset($_GET["success"]) && $_GET["success"] == "not-exists") {
+                        echo "<div class='alert alert-danger'>Email \"" . $_GET["email"] . "\" does not exists in our system. Sign up please.<br><a href='#' class='notRegistered'>Sign up</a></div>";
                     }
                 ?>
                 <input name="email" type="email" class="form-control" placeholder="Email address" autofocus required>
@@ -44,9 +47,9 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
                     <input name="remember" type="checkbox" value="remember-me"> Remember Me
                 </label>
                 <input name="submit" type="text" value="login" class="display-none">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
-                <button id="notRegistered" class="btn btn-lg btn-info btn-block" >Not Registered?</button>
-                <button id="notRegistered" class="btn btn-lg btn-default btn-block" >Forgot Password?</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+                <button class="notRegistered btn btn-lg btn-info btn-block" >Not Registered?</button>
+                <button class="forgotPassword btn btn-lg btn-default btn-block" >Forgot Password?</button>
 
             </form>
 
@@ -57,8 +60,16 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
                 <input name="email" type="email" class="form-control top" placeholder="Email address" required>
                 <input name="password" type="password" class="form-control bottom" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-                <button id="backToLogin" class="btn btn-lg btn-info btn-block" >Back to Log In</button>
+                <button class="btn btn-lg btn-info btn-block backToLogin" >Back to Log In</button>
                 <input name="submit" type="text" value="register" class="display-none">
+            </form>
+            
+            <form id="formForgotPassword" name="formForgotPassword" class="form-signin display-none" method="post" action="main.php">
+                <h2 class="form-signin-heading">Forgot password?</h2>
+                <input name="email" type="email" class="form-control mb10" placeholder="Email address" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Reset password</button>
+                <button class="btn btn-lg btn-info btn-block backToLogin" >Back to Log In</button>
+                <input name="submit" type="text" value="forgotPassword" class="display-none">
             </form>
 
 <?php

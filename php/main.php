@@ -3,7 +3,6 @@ require_once 'header.php';
 ?>
 
 
-<!-- Main component for a primary marketing message or call to action -->
 <div class="">
     <h1>Welcome to Helpdesk administration</h1>
     <!--<p>

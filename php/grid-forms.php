@@ -2,7 +2,6 @@
 
 include 'functions.php';
 
-session_start();
 $userId = $_SESSION["user_id"];
 
 $page = $_GET['page'];
@@ -12,7 +11,7 @@ $sord = $_GET['sord'];
 if (!$sidx)
     $sidx = 1;
 
-$result = dibi::query("SELECT COUNT(*) AS count FROM `hd_form` WHERE user_id = $userId ");
+$result = dibi::query("SELECT COUNT(*) AS count FROM `hd_form` WHERE user_id = $userId");
 $count = $result->fetchSingle();
 
 

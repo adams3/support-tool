@@ -1,5 +1,8 @@
 <?php
-include 'database.php';
+include "database.php";
+include "authenticate.php";
+require_once "vendor/autoload.php";
+use Mailgun\Mailgun;
 
 function isJson($string) {
     json_decode($string);
@@ -33,7 +36,8 @@ function getNumberOfForms($userId) {
 }
 
 function getMessageById($id) {
-    $SQL = "SELECT * FROM hd_message WHERE id = $id";
+    $userId = $_SESSION["user_id"];
+    $SQL = "SELECT * FROM hd_message WHERE id = $id AND user_id = $userId";
     try {
         $result = dibi::query($SQL);
         $row = $result->fetchAll();
@@ -41,7 +45,7 @@ function getMessageById($id) {
         die($e);
     }
 
-    return $row[0];
+    return  isset($row[0]) ? $row[0] : null;
 }
 
 function markMessageAsRead($id) {
@@ -62,18 +66,41 @@ function updateRow($arr, $messageId) {
     }
 }
 
-function deleteMessage($messageId) {
+function changePassword($email) {
     try {
-        $arr = array("deleted" => 1);
-        dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $messageId);
+        $email = mysql_real_escape_string($email);
+        $password = rand_passwd();
+        $arr["password"] = md5($password);
+        $res = dibi::query('UPDATE hd_user SET', $arr, 'WHERE `email` = %s', $email);
+        
+        if($res) {
+            $mg = new Mailgun("key-75wv99jndh25oueyatftijqf09xjk9v5");
+            $domain = "sandbox7573.mailgun.org";
+            $message = "Dear user,\n\n"
+                    . "Your new login:"
+                    . "Email: $email\n"
+                    . "Password: $password\n\n"
+                    . "Have a nice day";
+
+            $mailValues = array('from' => "change-password@support-adams3.rhcloud.com/",
+                'to' => $email,
+                'subject' => "Changed password",
+                'text' => $message
+            );
+            $mg->sendMessage($domain, $mailValues);
+        }
+        
+        return $res;
+        
     } catch (DibiException $e) {
         die($e);
     }
 }
 
-function insertRow($arr) {
+function deleteMessage($messageId) {
     try {
-        dibi::query('INSERT INTO `hd_message`', $arr);
+        $arr = array("deleted" => 1);
+        dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $messageId);
     } catch (DibiException $e) {
         die($e);
     }
@@ -129,9 +156,11 @@ function saveFormConfig ($data) {
 
 function getFormById($id) {
     try {
-        $result = dibi::query("SELECT config FROM `hd_form` WHERE id = $id");
+        $userId = $_SESSION["user_id"];
+        $result = dibi::query("SELECT config FROM `hd_form` WHERE id = $id AND user_id = $userId");
         $row = $result->fetchAll();
-        return $row[0];
+        
+        return isset($row[0]) ? $row[0] : null;
     } catch (DibiException $e) {
         die($e);
     }
@@ -152,4 +181,8 @@ function fix_keys($array) {
     } else {
         return $array;
     }
+}
+
+function rand_passwd( $length = 8, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' ) {
+    return substr( str_shuffle( $chars ), 0, $length );
 }

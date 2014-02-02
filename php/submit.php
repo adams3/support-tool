@@ -1,7 +1,7 @@
 <?php
 
 header('Access-Control-Allow-Origin: *');
-include 'functions.php';
+include "database.php";
 
 if (isset($_POST)) {
 
@@ -36,4 +36,12 @@ if (isset($_POST)) {
 }
 
 echo json_encode($retArr);
+
+function insertRow($arr) {
+    try {
+        dibi::query('INSERT INTO `hd_message`', $arr);
+    } catch (DibiException $e) {
+        die($e);
+    }
+}
 ?>
