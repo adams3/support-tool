@@ -5,13 +5,15 @@ include "functions.php";
 
         //TODO: nastylovat trosku ten clipboard
         //checkboxy nastylovat v gride
-        // nahrat to na openshift a vytvorit databazu a nejake test web...
-        //napriklad /test na rovnakej domene.
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!
 
  * dokoncit delete form a porozmyslat nad aktivnym formularom.
  * delete user? asi iba si dam deleted k userovi ktore sa bude nastavovat v db
  * user change password
+ * selectbox, radio button ?
+ * spravy-> flags checkboxy
+ * zjednotit id/name
+ * 
+ * required nejako nefunguje na openshift asi js chyba pozriet
 
  *
  *  */

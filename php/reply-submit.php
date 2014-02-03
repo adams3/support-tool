@@ -1,8 +1,8 @@
 <?php
 
 include 'functions.php';
-//require_once 'vendor/autoload.php';
-//use Mailgun\Mailgun;
+require_once 'vendor/autoload.php';
+use Mailgun\Mailgun;
 
 if (isset($_POST)) {
     if (isset($_POST["delete"])) {
@@ -48,8 +48,14 @@ if (isset($_POST)) {
 //    if($res["success"]){
 //        $sent = "danger";
 //    }
+        if($messageId) {
+            header("location:reply.php?id=" . $messageId . "&sent=" . $sent);
+            exit();
+        } else {
+            header("location:reply.php?sent=" . $sent);
+        }
 
-        header("location:reply.php?id=" . $messageId . "&sent=" . $sent);
+        
     }
 }
 ?>
