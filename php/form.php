@@ -173,6 +173,10 @@ require_once 'header.php';
 <div class="center mt15">
     <div class=" col-md-12 no-pl">
         <button id="submitForm" type="submit" class="btn btn-primary">Save and show form</button>
+        <?php if(isset($_GET["id"])){ 
+            echo '<input id="delete" name="delete" type="submit" class="btn btn-success hide" value="delete">
+                  <button class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmation">Delete</button>';        
+        } ?>
     </div>
 </div>
 </form>

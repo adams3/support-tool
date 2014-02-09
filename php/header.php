@@ -1,56 +1,29 @@
 <?php
 include "functions.php";
 
-session_start();
-
-if ( $_POST["submit"] == "login" && $_POST["email"] && $_POST["password"]) {
-    $user = login($_POST["email"], $_POST["password"]);
-    if ($user) {
-        $_SESSION["user_id"] = $user["id"];
-        $_SESSION["email"] = $user["email"];
-    } else {
-        header("location:index.php?success=false");
-        exit();
-    }
-}
-
 /*
-TODO : Forgot password, bude generovat link na obovu hesla alebo automaticka zmena hesla a poslanie na email
 
         //TODO: nastylovat trosku ten clipboard
         //checkboxy nastylovat v gride
-        // nahrat to na openshift a vytvorit databazu a nejake test web...
-        //napriklad /test na rovnakej domene.
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
- * urobit nejaky authenticate.php kde bude overovat prihlasenie a vsade si ho includovat.
- * delete form or email dat priznak delete a len kontrolovat pri vypise ci je delete
- * aktivne a neaktivne formulare?
+ * dokoncit delete form a porozmyslat nad aktivnym formularom.
+ * delete user? asi iba si dam deleted k userovi ktore sa bude nastavovat v db
+ * user change password
+ * selectbox, radio button ?
+ * spravy-> flags checkboxy
+ * zjednotit id/name
+ * 
+ * required nejako nefunguje na openshift asi js chyba pozriet
 
  *
  *  */
-
-if ($_POST["submit"] == "register") {
-    $data = $_POST;
-    unset($data["submit"]);
-    if(register($data)) {
-        header("location:index.php?success=registered");
-    } else {
-        header("location:index.php?success=exists&email=".$data["email"]);
-    }
-    exit();
-}
-
-if (!isset($_SESSION["user_id"]) || !isset($_SESSION["email"])) {
-    header("location:index.php");
-    exit();
-}
 
 
 $uri = $_SERVER["REQUEST_URI"];
 $a1 = "";
 $a2 = "";
+$a3 = "";
+$a4 = "";
 if ($uri == "/form.php") {
     $a1 = "active";
 }

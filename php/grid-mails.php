@@ -1,8 +1,6 @@
 <?php
+include 'functions.php';
 
-include 'database.php';
-
-session_start();
 $userId = $_SESSION["user_id"];
 
 $page = $_GET['page'];
@@ -12,7 +10,7 @@ $sord = $_GET['sord'];
 if (!$sidx)
     $sidx = 1;
 
-$result = dibi::query('SELECT COUNT(*) AS count FROM `hd_message`');
+$result = dibi::query("SELECT COUNT(*) AS count FROM `hd_message` WHERE user_id = $userId AND deleted = 0");
 $count = $result->fetchSingle();
 
 
@@ -38,7 +36,7 @@ if ($start < 0)
     $start = 0;
 
 // the actual query for the grid data
-$SQL = "SELECT m.* , f.config FROM hd_message m LEFT JOIN hd_form f on f.id = m.form_id WHERE m.user_id = $userId ORDER BY m.$sidx $sord LIMIT $start , $limit";
+$SQL = "SELECT m.* , f.config FROM hd_message m LEFT JOIN hd_form f on f.id = m.form_id WHERE m.user_id = $userId AND m.deleted = 0 ORDER BY m.$sidx $sord LIMIT $start , $limit";
 
 
 try {
@@ -76,28 +74,9 @@ $resultArr ["total"] = $total_pages;
 $resultArr ["records"] = $count;
 $resultArr ["rows"] = $rowsArr;
 
-function fix_keys($array) {
-    foreach ($array as $k => $val) {
-        if (is_array($val)) {
-            $array[$k] = fix_keys($val); //recursion
-        }
-        if (is_numeric($k)) {
-            $numberCheck = true;
-        }
-    }
-    if ($numberCheck === true) {
-        return array_values($array);
-    } else {
-        return $array;
-    }
-}
-
 $arrayValues = fix_keys($resultArr);
 
 $js = json_encode($arrayValues);
 echo $js;
 
 ?>
-
-
-

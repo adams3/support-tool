@@ -1,5 +1,4 @@
 <?php
-
 require dirname(__FILE__) . '/../libs/dibi/dibi/dibi.php';
 
 $options = array(
@@ -22,7 +21,7 @@ $options = array(
 try {
     dibi::connect($options);
 } catch (DibiException $e) {
-    echo"error db";
+    die("error db connection");
 };
 
 ?>
