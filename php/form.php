@@ -47,7 +47,7 @@ require_once 'header.php';
             <br>
             <div class="row well well-new-2">
                 <div class="col-sm-2 no-pl">
-                    <label>Name</label>
+                    <label>Name/ID</label>
                 </div>
                 <div class=" col-sm-2 no-pl">
                     <label>Label</label>
@@ -58,10 +58,7 @@ require_once 'header.php';
                 <div class="col-sm-2 no-pl">
                     <label>Placeholder</label>
                 </div>
-                <div class="col-sm-1 no-pl">
-                    <label>Id</label>
-                </div>
-                <div class="col-sm-1 no-pl">
+                <div class="col-sm-2 no-pl">
                     <label>Class</label>
                 </div>
                 <div class="col-sm-1 no-pl">
@@ -73,7 +70,7 @@ require_once 'header.php';
             </div>
             <div id="row0" class="row-copy row well well-new-2 display-none">
                 <div class="col-sm-2 no-pl">
-                    <label class="sr-only" for="nameInput">Name</label>
+                    <label class="sr-only" for="nameInput">Name/ID</label>
                     <input name="name" type="name" class="form-control input-new" id="nameInput" placeholder="Name" data-hd-type="name">
                 </div>
                 <div class=" col-sm-2 no-pl">
@@ -93,11 +90,7 @@ require_once 'header.php';
                     <label class="sr-only" for="exampleInputPassword2">Placeholder</label>
                     <input name="placeholder" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Placeholder" data-hd-type="placeholder">
                 </div>
-                <div class="col-sm-1 no-pl">
-                    <label class="sr-only" for="exampleInputPassword2">ID</label>
-                    <input name="id" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Id" data-hd-type="id">
-                </div>
-                <div class="col-sm-1 no-pl">
+                <div class="col-sm-2 no-pl">
                     <label class="sr-only" for="exampleInputPassword2">Class</label>
                     <input name="class" type="text" class="form-control input-new" id="exampleInputPassword2" placeholder="Class" data-hd-type="class">
                 </div>
@@ -173,9 +166,9 @@ require_once 'header.php';
 <div class="center mt15">
     <div class=" col-md-12 no-pl">
         <button id="submitForm" type="submit" class="btn btn-primary">Save and show form</button>
-        <?php if(isset($_GET["id"])){ 
+        <?php if(isset($_GET["id"])){
             echo '<input id="delete" name="delete" type="submit" class="btn btn-success hide" value="delete">
-                  <button class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmation">Delete</button>';        
+                  <button class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmation">Delete</button>';
         } ?>
     </div>
 </div>

@@ -11,9 +11,9 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
         <title>Sign in form</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="css/signin.css" rel="stylesheet" media="screen">
-        <link href="css/custom.css" rel="stylesheet" media="screen">
+        <link href="/stylesheets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/stylesheets/css/signin.css" rel="stylesheet" media="screen">
+        <link href="/stylesheets/css/custom.css" rel="stylesheet" media="screen">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -63,7 +63,7 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
                 <button class="btn btn-lg btn-info btn-block backToLogin" >Back to Log In</button>
                 <input name="submit" type="text" value="register" class="display-none">
             </form>
-            
+
             <form id="formForgotPassword" name="formForgotPassword" class="form-signin display-none" method="post" action="main.php">
                 <h2 class="form-signin-heading">Forgot password?</h2>
                 <input name="email" type="email" class="form-control mb10" placeholder="Email address" required>

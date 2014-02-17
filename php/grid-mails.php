@@ -61,6 +61,7 @@ foreach ($rows as $i => $row) {
 
     $config = (array) json_decode($row["config"]);
     $form = (array)$config["form"];
+    $rowsArr[$i]["cell"][] = $form["domain"];
     $rowsArr[$i]["cell"][] = $form["form-action"];
 
     $rowsArr[$i]["cell"][] = $row["read"];

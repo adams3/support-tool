@@ -12,7 +12,7 @@ include "functions.php";
  * selectbox, radio button ?
  * spravy-> flags checkboxy
  * zjednotit id/name
- * 
+ *
  * required nejako nefunguje na openshift asi js chyba pozriet
 
  *
@@ -49,15 +49,15 @@ if ($uri == "/reply.php") {
         <title>Helpdesk Form Maker</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
-        <link href="css/navbar.css" rel="stylesheet">
-        <link href="css/custom.css" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/css/navbar.css" >
+        <link rel="stylesheet" href="/stylesheets/css/custom.css" >
         <link rel="stylesheet" type="text/css" media="screen" href="/js/jqGrid-4.5/css/ui.jqgrid.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/jquery-ui-1.10.3.custom.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/ui.jqgrid.css" />
-        <!--<link rel="stylesheet" type="text/css" media="screen" href="/css/custom-theme/jqGrid.overrides.css" />-->
+        <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/css/custom-theme/jquery-ui-1.10.3.custom.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/css/custom-theme/ui.jqgrid.css" />
+        <!--<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/css/custom-theme/jqGrid.overrides.css" />-->
 
         <!--[if lt IE 9]>
           <script src="../../assets/js/html5shiv.js"></script>

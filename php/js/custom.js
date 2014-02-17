@@ -35,7 +35,7 @@ $(function() {
             });
         }
 
-        //can be removed if submit field is visible
+        //can be removed if submit field(in the form) is visible
         if($('#directUrl').length > 0) {
             $('#directUrl').val("http://" + window.location.hostname + submit);
         }
@@ -163,7 +163,7 @@ $(function() {
                     'name': row['name'],
                     'type': row['type'],
                     'placeholder': row['placeholder'],
-                    'id': row['id'],
+                    'id': row['name'],
                     'class': row['class']
                 });
                 $input.addClass('form-control');
@@ -175,7 +175,7 @@ $(function() {
                 }
 
                 $label.attr({
-                    'for': row['id']
+                    'for': row['name']
                 });
                 $label.html(row['label']);
 
@@ -261,7 +261,7 @@ $(function() {
             });
 
         }, 'json');
-        
+
     });
 
     $('input#reset').click(function(e) {
@@ -288,20 +288,21 @@ $(function() {
             datatype: "json",
             height: $(window).height() - 220,
             mtype: "GET",
-            colNames: ["ID", "Date Create", "Message", "Form Name", "Read", "Flag", "Replied", "Action"],
+            colNames: ["ID", "Date Create", "Message", "Domain", "Form Name", "Read", "Flag", "Replied", "Action"],
             colModel: [
-            {name: "id", width: 55},
-            {name: "date_create", formatter: 'date', formatoptions: {srcformat: "d.m.Y H:i:s", newformat: "d.m.Y H:i:s"}, width: 200},
-            {name: "message", width: 200,
+            {name: "id", width: 55, align: "center"},
+            {name: "date_create", formatter: 'date', formatoptions: {srcformat: "d.m.Y H:i:s", newformat: "d.m.Y H:i:s"}, width: 160, align: "center"},
+            {name: "message", width: 260,
                     formatter: function(v) {
                         return '<div class="mh50">' + v + '</div>';
                     }
             },
-            {name: "form-action", formatter: 'text', width: 200},
-            {name: "read", width: 80, formatter: 'checkbox', align: "center"},
-            {name: "flag", width: 80, formatter: 'checkbox', align: "center"},
-            {name: "replied", width: 80, formatter: 'checkbox', align: "center"},
-            {name: "action", widt: 40, formatter: reply_formatter, align: "center"}
+            {name: "domain", formatter: 'text', width: 180, align: "center"},
+            {name: "form-action", formatter: 'text', width: 200, align: "center"},
+            {name: "read", width: 60, formatter: 'checkbox', align: "center"},
+            {name: "flag", width: 60, formatter: 'checkbox', align: "center"},
+            {name: "replied", width: 60, formatter: 'checkbox', align: "center"},
+            {name: "action", widt:40, formatter: reply_formatter, align: "center"}
             ],
             pager: "#pager",
             rowNum: 20,
@@ -322,9 +323,9 @@ $(function() {
             mtype: "GET",
             colNames: ["ID", "Form Action", "Domain", "Action"],
             colModel: [
-            {name: "id", width: 55},
-            {name: "form-action", width: 80, formatter: 'text', align: "left"},
-            {name: "domain", width: 80, formatter: 'text', align: "left"},
+            {name: "id", width: 55, align: "center"},
+            {name: "form-action", width: 80, formatter: 'text', align: "center"},
+            {name: "domain", width: 80, formatter: 'text', align: "center"},
             {name: "action", widt: 40, formatter: config_formatter, align: "center"}
             ],
             pager: "#pager",
@@ -348,7 +349,7 @@ $(function() {
        $("#formLogIn").slideToggle('slow');
        $("#formSignUp").slideToggle('slow');
     });
-    
+
     $(".backToLogin").click(function(e){
        e.preventDefault();
        if($("#formSignUp").is(":visible")) {
@@ -359,11 +360,27 @@ $(function() {
        }
        $("#formLogIn").slideToggle('slow');
     });
-    
+
     $(".forgotPassword").click(function(e){
        e.preventDefault();
        $("#formLogIn").slideToggle('slow');
        $("#formForgotPassword").slideToggle('slow');
+    });
+
+    // Dynamically added
+    // Unique name/id
+    $(document).on('blur','input[data-hd-type=name]', function() {
+        var values = [];
+        $('input[data-hd-type=name]').each(function() {
+            if ( $.inArray(this.value, values) >= 0 ) {
+                alert("Name/ID must be unique or cannot be blank");
+                $(this).focus();
+                $(this).select();
+                return false; // stops the loop
+            } else {
+                values.push(this.value);
+            }
+        });
     });
 
 });
@@ -372,11 +389,11 @@ $(function() {
 
 
 function reply_formatter(cellvalue, options, rowObject) {
-    return '<a href="reply.php?id=' + rowObject[0] + '">Reply</a>';
+    return '<a href="reply.php?id=' + rowObject[0] + '">Open</a>';
 }
 
 function config_formatter(cellvalue, options, rowObject) {
-    return '<a href="form.php?id=' + rowObject[0] + '">Config the form</a>';
+    return '<a href="form.php?id=' + rowObject[0] + '">Configure form</a>';
 }
 
 function handleSelectedRow(rowId, status, e) {
@@ -434,3 +451,32 @@ function cloneElement(rowNumber, type, data) {
 function deleteRow() {
         $('#delete').trigger('click');
 }
+
+var webalize = function (str) {
+	var charlist;
+	charlist = [
+		['Á','A'], ['Ä','A'], ['Č','C'], ['Ç','C'], ['Ď','D'], ['É','E'], ['Ě','E'],
+		['Ë','E'], ['Í','I'], ['Ň','N'], ['Ó','O'], ['Ö','O'], ['Ř','R'], ['Š','S'],
+		['Ť','T'], ['Ú','U'], ['Ů','U'], ['Ü','U'], ['Ý','Y'], ['Ž','Z'], ['á','a'],
+		['ä','a'], ['č','c'], ['ç','c'], ['ď','d'], ['é','e'], ['ě','e'], ['ë','e'],
+		['í','i'], ['ň','n'], ['ó','o'], ['ö','o'], ['ř','r'], ['š','s'], ['ť','t'],
+		['ú','u'], ['ů','u'], ['ü','u'], ['ý','y'], ['ž','z']
+	];
+	for (var i in charlist) {
+		var re = new RegExp(charlist[i][0],'g');
+		str = str.replace(re, charlist[i][1]);
+	}
+
+	str = str.replace(/[^a-z0-9]/ig, '-');
+	str = str.replace(/\-+/g, '-');
+	if (str[0] == '-') {
+		str = str.substring(1, str.length);
+	}
+	if (str[str.length - 1] == '-') {
+		str = str.substring(0, str.length - 1);
+	}
+
+	return str.toLowerCase();
+}
+
+
