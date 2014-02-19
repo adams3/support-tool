@@ -16,9 +16,8 @@
 
 
 <script src="js/jquery-1.10.1.min.js"></script>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-<script src="http://support-adams3.rhcloud.com/config/c4ca4238a0b923820dcc509a6f75849b/c4ca4238a0b923820dcc509a6f75849b/helpdesk-form.js"></script>
-
+<link href="http://local.support.cz/stylesheets/css/bootstrap-prefixed.css" rel="stylesheet">
+<script src="http://local.support.cz/js/bootstrap.min.js"></script>
+<script src="http://local.support.cz/config/c4ca4238a0b923820dcc509a6f75849b/c9f0f895fb98ab9159f51fd0297e236d/helpdesk-form.js"></script>
 </body>
 </html>

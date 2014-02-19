@@ -40,13 +40,13 @@ audio:not([controls]) {
   display: none;
 }
 
-html {
+html, div {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
 
-body {
+body, div {
   margin: 0;
 }
 
@@ -168,6 +168,7 @@ select {
 
 button,
 html input[type="button"],
+div input[type="button"],
 input[type="reset"],
 input[type="submit"] {
   cursor: pointer;
@@ -175,7 +176,8 @@ input[type="submit"] {
 }
 
 button[disabled],
-html input[disabled] {
+html input[disabled]
+div input[disabled] {
   cursor: default;
 }
 
@@ -294,17 +296,20 @@ table {
           box-sizing: border-box;
 }
 
-html {
+html, div {
   font-size: 62.5%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-body {
+body, div, a {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
-  background-color: #ffffff;
+}
+
+body {
+    background-color: #ffffff;
 }
 
 input,

@@ -5,9 +5,10 @@ var numberOfButtons = 0;
 var lastButtonNumber = 0;
 
 var bootstrapJs = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js";
-var bootstrapCss = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css";
+//var bootstrapCss = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css";
+var bootstrapCss = 'http://' + window.location.hostname + '/stylesheets/css/bootstrap-prefixed.css';
 var filename = "helpdesk-form.js";
-var submit = "/submit.php"
+var submit = "/submit.php";
 var address = "";
 var hashUserId = 0; //hash
 var hashFormId = 0; //hash
@@ -227,8 +228,10 @@ $(function() {
             $input.css('display', 'none');
             $div2.append($input);
 
-            var supportButton = '$("body").append(\'<div id="support-button" style="position: fixed;right: 0px;bottom: 100px"><a data-toggle="modal" href="#sp-modal"  class="btn btn-primary btn-lg">Contact Us</a></div>\');';
-            var form = $('<div>').append($('#sp-modal').clone().addClass('modal fade')).html();
+            var supportButton = '$("body").append(\'<div id="support-button" class="bootstrap-styles" style="position: fixed;right: 0px;bottom: 100px"><a data-toggle="modal" href="#sp-modal"  class="btn btn-primary btn-lg">Contact Us</a></div>\');';
+//            var form = $('<div>').append($('#sp-modal').clone().addClass('modal fade')).html();
+            var spModal = $('<div class="bootstrap-styles">').append($('#sp-modal').clone().addClass('modal fade'));
+            var form = $('<div>').append(spModal).html();
             var ajaxSubmit = "$('form#sp-support-forms').on('submit', function(e) { e.preventDefault();var parsed=null; $.post($(this).attr('action'), $(this).serializeArray(), function(data) { $('#alertMessage').addClass(data['class']); $('#alertMessage').show(); $('#alertMessage').html(data['alertMessage']);},'json'); });";
             var modalForm = '$("body").append(\'' + form + '\');' + '$("#domain").val(window.location.hostname);' + ajaxSubmit;
             var bootstrapSource = '<link href="' + bootstrapCss + '" rel="stylesheet">\n<script src="' + bootstrapJs + '"></script>';
@@ -372,6 +375,7 @@ $(function() {
     $(document).on('blur','input[data-hd-type=name]', function() {
         var values = [];
         $('input[data-hd-type=name]').each(function() {
+            this.value = webalize(this.value);
             if ( $.inArray(this.value, values) >= 0 ) {
                 alert("Name/ID must be unique or cannot be blank");
                 $(this).focus();
