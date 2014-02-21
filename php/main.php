@@ -10,9 +10,12 @@ require_once 'header.php';
     </p>-->
 </div>
 <div class="well well-new">
-<a href="/forms.php">You have <strong><?php echo getNumberOfForms($_SESSION["user_id"]) ?></strong> forms</a><br>
-<a href="/mails.php">You have <strong><?php echo getNumberOfUnread($_SESSION["user_id"]) ?></strong> new messages.</a>
-
+    <a href="/forms.php">You have <strong><?php echo getNumberOfForms($_SESSION["user_id"]) ?></strong> forms</a><br>
+    <a href="/mails.php">You have <strong><?php echo getNumberOfUnread($_SESSION["user_id"]) ?></strong> new messages</a>
+</div> <!-- /container -->
+<div class="well well-new">
+    <a href="/form.php">Make a new form</a><br>
+    <a href="/reply.php">Send a new message</a>
 </div> <!-- /container -->
 
 <?php

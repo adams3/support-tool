@@ -11,7 +11,6 @@ include "functions.php";
  * user change password
  * selectbox, radio button ?
  * spravy-> flags checkboxy
- * zjednotit id/name
  *
  * required nejako nefunguje na openshift asi js chyba pozriet
 
@@ -89,6 +88,7 @@ if ($uri == "/reply.php") {
                         <li class="<?php echo $a2; ?>"><a href="/forms.php">My forms <span class="badge"><?php echo getNumberOfForms($_SESSION["user_id"]) ?></span></a></li>
                         <li class="<?php echo $a3; ?>"><a href="/mails.php">Customer queries <span class="badge"><?php echo getNumberOfUnread($_SESSION["user_id"]) ?></span></a></li>
                         <li class="<?php echo $a4; ?>"><a href="/reply.php">New message</a></li>
+                        <li><a href="#" onclick="TogetherJS(this); return false;">Collaborate</a></li>
 <!--                        <li class="dropdown <?php echo $a2; ?>">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpdesk<b class="caret"></b></a>
                             <ul class="dropdown-menu">

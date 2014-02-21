@@ -17,7 +17,7 @@
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-</div><!-- /.modal --> 
+</div><!-- /.modal -->
 
 
 <script src="js/jquery-1.10.1.min.js"></script>
@@ -29,6 +29,7 @@
 <script src="js/jqGrid-4.5/js/jquery.jqGrid.src.js" type="text/javascript"></script>
 
 <script src="js/custom.js"></script>
+<script src="https://togetherjs.com/togetherjs-min.js"></script>
 
 </body>
 </html>

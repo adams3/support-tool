@@ -9,7 +9,7 @@ var bootstrapJs = "//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js
 var bootstrapCss = 'http://' + window.location.hostname + '/stylesheets/css/bootstrap-prefixed.css';
 var filename = "helpdesk-form.js";
 var submit = "/submit.php";
-var address = "";
+var formConfigAddress = "";
 var hashUserId = 0; //hash
 var hashFormId = 0; //hash
 var originalUserId = 0;
@@ -25,7 +25,7 @@ $(function() {
         originalFormId = data.formId;
         hashUserId = data.hashUserId;
         hashFormId = data.hashFormId;
-        address = "config/" + hashUserId + "/" + hashFormId + "/" + filename;
+        formConfigAddress = "config/" + hashUserId + "/" + hashFormId + "/" + filename;
 
         var parsed = data.form;
         for (var index in parsed) {
@@ -234,15 +234,29 @@ $(function() {
             var form = $('<div>').append(spModal).html();
             var ajaxSubmit = "$('form#sp-support-forms').on('submit', function(e) { e.preventDefault();var parsed=null; $.post($(this).attr('action'), $(this).serializeArray(), function(data) { $('#alertMessage').addClass(data['class']); $('#alertMessage').show(); $('#alertMessage').html(data['alertMessage']);},'json'); });";
             var modalForm = '$("body").append(\'' + form + '\');' + '$("#domain").val(window.location.hostname);' + ajaxSubmit;
-            var bootstrapSource = '<link href="' + bootstrapCss + '" rel="stylesheet">\n<script src="' + bootstrapJs + '"></script>';
-            var copiableScript = bootstrapSource + '\n' + '<script>\n' + supportButton + modalForm + '\n</script>';
-            var formSrc = '\n<script src="' + 'http://' + window.location.hostname + '/' + address + '"></script>';
-            var copiableScript2 = bootstrapSource + formSrc;
 
-            $.post('save-js.php', {message: supportButton + modalForm, filename: filename, hashUserId : hashUserId ,hashFormId : hashFormId});
+            var bootstrapSource =
+            '   var $css = $("<link/>"); \n\
+                $css.attr("href", "'+ bootstrapCss +'");\n\
+                $css.attr("rel", "stylesheet");\n\
+                $("head").append($css); \n\
+                if(!(typeof $().emulateTransitionEnd == "function")) { \n\
+                    var js = document.createElement("script"); \n\
+                    js.src = "'+ bootstrapJs +'";\n\
+                    js.type = "text/javascript";\n\
+                    document.getElementsByTagName("body")[0].appendChild(js); \n\
+            }\n\
+            ';
 
-            $copyMe.find('textarea').val(copiableScript2);
-            $copyMeAdvanced.find('textarea').val(copiableScript);
+            var formFullScript = bootstrapSource + supportButton + modalForm;
+            var copiableAdvancedScript = '<script type="text/javascript">\n' + formFullScript + '\n</script>';
+            var formSrc = '<script type="text/javascript" src="' + 'http://' + window.location.hostname + '/' + formConfigAddress + '"></script>';
+            var copiableScript = formSrc;
+
+            $.post('save-js.php', {message: formFullScript, filename: filename, hashUserId : hashUserId ,hashFormId : hashFormId});
+
+            $copyMe.find('textarea').val(copiableScript);
+            $copyMeAdvanced.find('textarea').val(copiableAdvancedScript);
 
             var clip = new ZeroClipboard($("#copyButton, #copyButtonAdvanced"), {
                 moviePath: "js/ZeroClipboard.swf"
@@ -389,7 +403,7 @@ $(function() {
 
 });
 
-////////////////////////////////////////////////////////////////////////
+////////////////////////////////FUNCTIONS////////////////////////////////////////
 
 
 function reply_formatter(cellvalue, options, rowObject) {
