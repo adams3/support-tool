@@ -14,6 +14,9 @@ include "functions.php";
  *
  * required nejako nefunguje na openshift asi js chyba pozriet
 
+
+Ked se zobrazi formular tak to cierne pozadie je treba. (modal)
+ * kulate rohy na formulare button
  *
  *  */
 
