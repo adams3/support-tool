@@ -10,7 +10,7 @@ function isJson($string) {
 }
 
 function getNumberOfUnread($userId) {
-    $SQL = "SELECT * FROM hd_message WHERE `read` = 0 AND user_id = $userId";
+    $SQL = "SELECT * FROM hd_message WHERE `read` = 0 AND user_id = $userId AND deleted = 0";
 
     try {
         $result = dibi::query($SQL);
@@ -23,7 +23,7 @@ function getNumberOfUnread($userId) {
 }
 
 function getNumberOfForms($userId) {
-    $SQL = "SELECT * FROM hd_form WHERE user_id = $userId";
+    $SQL = "SELECT * FROM hd_form WHERE user_id = $userId AND deleted = 0";
 
     try {
         $result = dibi::query($SQL);
@@ -72,7 +72,7 @@ function changePassword($email) {
         $password = rand_passwd();
         $arr["password"] = md5($password);
         $res = dibi::query('UPDATE hd_user SET', $arr, 'WHERE `email` = %s', $email);
-        
+
         if($res) {
             $mg = new Mailgun("key-75wv99jndh25oueyatftijqf09xjk9v5");
             $domain = "sandbox7573.mailgun.org";
@@ -89,9 +89,9 @@ function changePassword($email) {
             );
             $mg->sendMessage($domain, $mailValues);
         }
-        
+
         return $res;
-        
+
     } catch (DibiException $e) {
         die($e);
     }
@@ -101,6 +101,15 @@ function deleteMessage($messageId) {
     try {
         $arr = array("deleted" => 1);
         dibi::query('UPDATE hd_message SET', $arr, 'WHERE id = %i', $messageId);
+    } catch (DibiException $e) {
+        die($e);
+    }
+}
+
+function deleteForm($formId) {
+    try {
+        $arr = array("deleted" => 1);
+        dibi::query('UPDATE hd_form SET', $arr, 'WHERE id = %i', $formId);
     } catch (DibiException $e) {
         die($e);
     }
@@ -159,7 +168,7 @@ function getFormById($id) {
         $userId = $_SESSION["user_id"];
         $result = dibi::query("SELECT config FROM `hd_form` WHERE id = $id AND user_id = $userId");
         $row = $result->fetchAll();
-        
+
         return isset($row[0]) ? $row[0] : null;
     } catch (DibiException $e) {
         die($e);

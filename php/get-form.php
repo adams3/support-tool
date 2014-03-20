@@ -8,7 +8,7 @@ if($_GET["formId"]) {
 
     $formId = (int) $_GET["formId"];
     $data = getFormById($formId);
-    if($data) {    
+    if($data) {
         $jsonArr = json_decode($data["config"]);
         $jsonArr->userId = $_SESSION["user_id"];
         $jsonArr->formId = $formId;

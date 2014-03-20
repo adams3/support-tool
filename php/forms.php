@@ -1,5 +1,9 @@
 <?php
 require_once 'header.php';
+
+if (isset($_GET["deleted"]) && $_GET["deleted"] == "success") {
+    echo '<div class="alert alert-success">Form has been successfully deleted.</div>';
+}
 ?>
 
 <div id="forms">

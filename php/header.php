@@ -102,6 +102,7 @@ if ($uri == "/reply.php") {
                                                         <li><a href="#">One more separated link</a></li>-->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="#">My account</a></li>
                         <li class="active"><a href="/logout.php">Logout</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->

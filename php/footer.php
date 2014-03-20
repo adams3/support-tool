@@ -13,7 +13,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" onclick="deleteRow()">Delete</button>
+        <button type="button" class="btn btn-danger" onclick="deleteRow(<?php if(isset($_GET["id"])){echo $_GET["id"]; echo ","; echo strstr($uri,"form") ? "'form'" : "'mail'" ;}?>)">Delete</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

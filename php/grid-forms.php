@@ -11,7 +11,7 @@ $sord = $_GET['sord'];
 if (!$sidx)
     $sidx = 1;
 
-$result = dibi::query("SELECT COUNT(*) AS count FROM `hd_form` WHERE user_id = $userId");
+$result = dibi::query("SELECT COUNT(*) AS count FROM `hd_form` WHERE user_id = $userId AND deleted = 0");
 $count = $result->fetchSingle();
 
 
@@ -37,7 +37,7 @@ if ($start < 0)
     $start = 0;
 
 // the actual query for the grid data
-$SQL = "SELECT * FROM hd_form WHERE user_id = $userId ORDER BY $sidx $sord LIMIT $start , $limit";
+$SQL = "SELECT * FROM hd_form WHERE user_id = $userId AND deleted = 0 ORDER BY $sidx $sord LIMIT $start , $limit";
 
 
 try {

@@ -466,8 +466,16 @@ function cloneElement(rowNumber, type, data) {
 
 }
 
-function deleteRow() {
-        $('#delete').trigger('click');
+function deleteRow(id,action) {
+    $.getJSON("delete.php", {"id" : id, "action" : action}, function(data) {
+    });
+    //redirect
+    if (action == "form" ) {
+        window.location = window.location.origin + '/forms.php?deleted=success';
+    } else {
+        window.location = window.location.origin + '/mails.php?deleted=success';
+    }
+
 }
 
 var webalize = function (str) {
