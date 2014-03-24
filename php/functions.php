@@ -1,7 +1,9 @@
 <?php
+
 include "database.php";
 include "authenticate.php";
 require_once "vendor/autoload.php";
+
 use Mailgun\Mailgun;
 
 function isJson($string) {
@@ -45,7 +47,7 @@ function getMessageById($id) {
         die($e);
     }
 
-    return  isset($row[0]) ? $row[0] : null;
+    return isset($row[0]) ? $row[0] : null;
 }
 
 function markMessageAsRead($id) {
@@ -73,7 +75,7 @@ function changePassword($email) {
         $arr["password"] = md5($password);
         $res = dibi::query('UPDATE hd_user SET', $arr, 'WHERE `email` = %s', $email);
 
-        if($res) {
+        if ($res) {
             $mg = new Mailgun("key-75wv99jndh25oueyatftijqf09xjk9v5");
             $domain = "sandbox7573.mailgun.org";
             $message = "Dear user,\n\n"
@@ -91,7 +93,6 @@ function changePassword($email) {
         }
 
         return $res;
-
     } catch (DibiException $e) {
         die($e);
     }
@@ -142,14 +143,14 @@ function register($data) {
     }
 }
 
-function saveFormConfig ($data) {
+function saveFormConfig($data) {
     try {
         $id = $data["id"];
         unset($data["id"]);
         $result = dibi::query("SELECT id FROM `hd_form` WHERE id = $id");
         $row = $result->fetchAll();
 
-        if($row) {
+        if ($row) {
             dibi::query('UPDATE hd_form SET', $data, 'WHERE id = %i', $id);
         } else {
             $res = dibi::query('INSERT INTO `hd_form`', $data);
@@ -160,7 +161,6 @@ function saveFormConfig ($data) {
     } catch (DibiException $e) {
         return false;
     }
-
 }
 
 function getFormById($id) {
@@ -172,6 +172,49 @@ function getFormById($id) {
         return isset($row[0]) ? $row[0] : null;
     } catch (DibiException $e) {
         die($e);
+    }
+}
+
+function getUser() {
+    try {
+        $userId = $_SESSION["user_id"];
+        $result = dibi::query("SELECT * FROM `hd_user` WHERE id = $userId");
+        $row = $result->fetchAll();
+
+        return isset($row[0]) ? $row[0] : null;
+    } catch (DibiException $e) {
+        die($e);
+    }
+}
+
+function saveUser($data) {
+    try {
+
+        $success = true;
+
+        if(!empty($data["oldPassword"]) && !empty($data["newPassword"]) && $data["password"] != md5($data["oldPassword"])) {
+            $success = false;
+        }
+
+        if (!empty($data["oldPassword"]) && !empty($data["newPassword"]) && $data["password"] == md5($data["oldPassword"])) {
+            $data["password"] = md5($data["newPassword"]);
+        }
+
+        unset($data["oldPassword"]);
+        unset($data["newPassword"]);
+
+        $data["name"] = mysql_real_escape_string($data["name"]);
+        $data["surname"] = mysql_real_escape_string($data["surname"]);
+
+        $userId = $_SESSION["user_id"];
+
+        dibi::query('UPDATE hd_user SET', $data, 'WHERE `id` = %i', $userId);
+
+        $data["success"] = $success;
+
+        return $data;
+    } catch (DibiException $e) {
+        return false;
     }
 }
 
@@ -192,6 +235,6 @@ function fix_keys($array) {
     }
 }
 
-function rand_passwd( $length = 8, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' ) {
-    return substr( str_shuffle( $chars ), 0, $length );
+function rand_passwd($length = 8, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') {
+    return substr(str_shuffle($chars), 0, $length);
 }
