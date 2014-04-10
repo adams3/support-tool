@@ -82,6 +82,8 @@ require_once 'header.php';
                         <option value="text">text</option>
                         <option value="email">email</option>
                         <option value="checkbox">checkbox</option>
+                        <option value="selectbox">selectbox</option>
+                        <option value="radio">radio button</option>
                         <option value="textarea">textarea</option>
                         <option value="password">password</option>
                     </select>
@@ -101,6 +103,9 @@ require_once 'header.php';
                 </div>
                 <div class="col-sm-1 no-pl">
                     <button class="btn btn-danger remove remove-row">Remove</button>
+                </div>
+                <div class="col-sm-11 no-pl">
+                    <input name="multipleValues" class="form-control input-new values display-none" id="multipleValues" placeholder="Place for values (separate by: , )" data-hd-type="multipleValues"/>
                 </div>
             </div>
         </div>

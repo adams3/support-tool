@@ -29,7 +29,7 @@ $(function() {
 
         var parsed = data.form;
         for (var index in parsed) {
-            $('input').each(function() {
+            $('input, textarea').each(function() {
                 if ($(this).attr('name') == index) {
                     $(this).val(parsed[index]);
                 }
@@ -150,23 +150,63 @@ $(function() {
                 var row = rows[i];
                 var $div = $('<div class="form-group"></div>');
                 var $input = null;
+                var multipleValueArr = row.multipleValues.split(',');
 
-                if (row['type'] == "textarea") {
-                    $input = $(document.createElement('textarea'));
-                } else {
-                    $input = $(document.createElement('input'));
+//                console.log(multipleValueArr);
+
+                switch (row['type'])
+                {
+                    case "textarea":
+                        $input = $(document.createElement('textarea'));
+                        break;
+                    case "radio":
+                    case "checkbox":
+                        $input = $(document.createElement('div'));
+
+                        var name = row['name'];
+
+                        for (var i in multipleValueArr) {
+//                            var newName = name;
+//                            if(row['type'] == "checkbox") {
+//                                newName = name + '[' + i + ']';
+//                            }
+
+//je to zlee !
+//posledny dotaz mail v db zmazat
+
+                            $input.append($('<label class="' + row['type'] + '-inline"><input name="'+ name +'" type="' + row['type'] + '" id="'+ row['name'] + i +'" value="' + multipleValueArr[i].trim() + '"> ' + multipleValueArr[i].trim() + '</label>'));
+                        }
+
+                        break;
+                    case "selectbox":
+                        $input = $(document.createElement('select'));
+                        for (var i in multipleValueArr) {
+                            $input.append('<option value= ' + multipleValueArr[i].trim() + '>'+ multipleValueArr[i].trim() + '</option>');
+                        }
+                        break;
+                    default:
+                        $input = $(document.createElement('input'));
+
                 }
+
+//                if (row['type'] == "textarea") {
+//                    $input = $(document.createElement('textarea'));
+//                } else {
+//                    $input = $(document.createElement('input'));
+//                }
 
                 var $label = $(document.createElement('label'));
 
+                if(row['type'] != "checkbox" || row['type'] != "radio") {
+                    $input.attr({
+                        'name': row['name'],
+                        'type': row['type'],
+                        'placeholder': row['placeholder'],
+                        'id': row['name'],
+                        'class': row['class']
+                    });
+                }
 
-                $input.attr({
-                    'name': row['name'],
-                    'type': row['type'],
-                    'placeholder': row['placeholder'],
-                    'id': row['name'],
-                    'class': row['class']
-                });
                 $input.addClass('form-control');
 
                 if (row['required'] == "") {
@@ -401,6 +441,15 @@ $(function() {
         });
     });
 
+    $(document).on('change','select[data-hd-type=type]', function() {
+        var typeValue = $(this).val();
+        console.log(typeValue);
+        if(typeValue == "checkbox" || typeValue == "radio" || typeValue == "selectbox") {
+            $(this).parent().parent().find('input[data-hd-type=multipleValues]').show();
+
+        }
+    });
+
 });
 
 ////////////////////////////////FUNCTIONS////////////////////////////////////////
@@ -462,6 +511,10 @@ function cloneElement(rowNumber, type, data) {
         lastButtonNumber++;
         $clone.attr('id', type + (lastButtonNumber));
         $clone.appendTo('form#supportForm #buttons');
+    }
+
+    if(data.type == "checkbox" || data.type == "selectbox" || data.type == "radio") {
+        $clone.find('input[data-hd-type=multipleValues]').show();
     }
 
 }
