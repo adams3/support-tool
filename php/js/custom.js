@@ -152,8 +152,6 @@ $(function() {
                 var $input = null;
                 var multipleValueArr = row.multipleValues.split(',');
 
-//                console.log(multipleValueArr);
-
                 switch (row['type'])
                 {
                     case "textarea":
@@ -162,19 +160,13 @@ $(function() {
                     case "radio":
                     case "checkbox":
                         $input = $(document.createElement('div'));
-
                         var name = row['name'];
-
                         for (var i in multipleValueArr) {
-//                            var newName = name;
-//                            if(row['type'] == "checkbox") {
-//                                newName = name + '[' + i + ']';
-//                            }
-
-//je to zlee !
-//posledny dotaz mail v db zmazat
-
-                            $input.append($('<label class="' + row['type'] + '-inline"><input name="'+ name +'" type="' + row['type'] + '" id="'+ row['name'] + i +'" value="' + multipleValueArr[i].trim() + '"> ' + multipleValueArr[i].trim() + '</label>'));
+                            var newName = name;
+                            if(row['type'] == "checkbox") {
+                                newName = name + '[]';
+                            }
+                            $input.append($('<label class="' + row['type'] + '-inline"><input name="'+ newName +'" type="' + row['type'] + '" id="'+ row['name'] + i +'" value="' + multipleValueArr[i].trim() + '"> ' + multipleValueArr[i].trim() + '</label>'));
                         }
 
                         break;
@@ -188,12 +180,6 @@ $(function() {
                         $input = $(document.createElement('input'));
 
                 }
-
-//                if (row['type'] == "textarea") {
-//                    $input = $(document.createElement('textarea'));
-//                } else {
-//                    $input = $(document.createElement('input'));
-//                }
 
                 var $label = $(document.createElement('label'));
 

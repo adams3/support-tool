@@ -34,6 +34,10 @@ if (isset($_GET["id"])) {
     $formatedMessage = "";
     $message = (array) json_decode($row["message"]);
     foreach ($message as $key => $input) {
+        if(is_array($input)) {
+            $input = implode(", ", $input);
+        }
+
         $formatedMessage .= $key . " : " . $input . "\n";
     }
     $rowString .= $formatedMessage;
