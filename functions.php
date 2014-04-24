@@ -2,7 +2,8 @@
 
 include "database.php";
 include "authenticate.php";
-require_once "vendor/autoload.php";
+
+require_once 'libs/autoload.php';
 
 use Mailgun\Mailgun;
 
