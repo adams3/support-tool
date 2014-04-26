@@ -499,7 +499,7 @@ function cloneElement(rowNumber, type, data) {
         $clone.appendTo('form#supportForm #buttons');
     }
 
-    if(data.type == "checkbox" || data.type == "selectbox" || data.type == "radio") {
+    if( data && (data.type == "checkbox" || data.type == "selectbox" || data.type == "radio")) {
         $clone.find('input[data-hd-type=multipleValues]').show();
     }
 

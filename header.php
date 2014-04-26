@@ -1,26 +1,6 @@
 <?php
 include "functions.php";
 
-/*
-
-        //TODO: nastylovat trosku ten clipboard
-        //checkboxy nastylovat v gride
-
- * dokoncit delete form a porozmyslat nad aktivnym formularom.
- * delete user? asi iba si dam deleted k userovi ktore sa bude nastavovat v db
- * user change password
- * selectbox, radio button ?
- * spravy-> flags checkboxy
- *
- * required nejako nefunguje na openshift asi js chyba pozriet
-
-
-Ked se zobrazi formular tak to cierne pozadie je treba. (modal)
- * kulate rohy na formulare button
- *
- *  */
-
-
 $uri = $_SERVER["REQUEST_URI"];
 $a1 = "";
 $a2 = "";

@@ -11,15 +11,12 @@ $id = 0;
 if(isset($_GET["sent"])) {
     $sent = $_GET["sent"];
 }
-$configFile = "config/configureForm.json";
-
-$json = json_decode(file_get_contents($configFile), true);
-$form = (array) json_decode($json["form"]);
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 
     $row = getMessageById($id);
+    $form = getFormById($row["form_id"]);
     markMessageAsRead((int) $id);
 
     $rowString = "\n\n------------------------------------------------------------------------------\n";
@@ -30,17 +27,7 @@ if (isset($_GET["id"])) {
     }
 
     $rowString .= $informMessage . date("d.m.Y H:i:s", strtotime($row["date_create"])) . "\n\n";
-
-    $formatedMessage = "";
-    $message = (array) json_decode($row["message"]);
-    foreach ($message as $key => $input) {
-        if(is_array($input)) {
-            $input = implode(", ", $input);
-        }
-
-        $formatedMessage .= $key . " : " . $input . "\n";
-    }
-    $rowString .= $formatedMessage;
+    $rowString .= formatMessage($row);
 
     $domain = $row["domain"];
     $from = $form["send-to"];

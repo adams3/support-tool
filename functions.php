@@ -239,3 +239,16 @@ function fix_keys($array) {
 function rand_passwd($length = 8, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') {
     return substr(str_shuffle($chars), 0, $length);
 }
+
+function formatMessage($row) {
+    $formatedMessage = "";
+    $message = (array) json_decode($row["message"]);
+    foreach ($message as $key => $input) {
+        if(is_array($input)) {
+            $input = implode(", ", $input);
+        }
+
+        $formatedMessage .= $key . " : " . $input . "\n";
+    }
+    return $formatedMessage;
+}

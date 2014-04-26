@@ -18,6 +18,6 @@
 
 
 <script src="js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="http://local.support.cz/config/c4ca4238a0b923820dcc509a6f75849b/d3d9446802a44259755d38e6d163e820/helpdesk-form.js"></script>
+<script type="text/javascript" src="http://local.support.cz/config/c4ca4238a0b923820dcc509a6f75849b/c4ca4238a0b923820dcc509a6f75849b/helpdesk-form.js"></script>
 </body>
 </html>
