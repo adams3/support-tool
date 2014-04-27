@@ -254,7 +254,7 @@ $(function() {
             $input.css('display', 'none');
             $div2.append($input);
 
-            var supportButton = '$("body").append(\'<div id="support-button" class="bootstrap-styles" style="position: fixed;right: 0px;bottom: 100px"><a data-toggle="modal" href="#sp-modal"  class="btn btn-primary btn-lg">Contact Us</a></div>\');';
+            var supportButton = '$("body").append(\'<div id="support-button" class="bootstrap-styles" style="position: fixed;right: 0px;bottom: 100px"><a data-toggle="modal" href="#sp-modal"  class="btn btn-primary btn-lg">'+parsed['form-action']+'</a></div>\');';
 //            var form = $('<div>').append($('#sp-modal').clone().addClass('modal fade')).html();
             var spModal = $('<div class="bootstrap-styles">').append($('#sp-modal').clone().addClass('modal fade'));
             var form = $('<div>').append(spModal).html();
