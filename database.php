@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Defines database connection
+ *
+ * @author Adam Studenic
+ *
+ */
+
 require 'libs/dibi/dibi/dibi.php';
 
 $options = array(

@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * JqGrid neccessary callbacks for messages
+ *
+ * @author Adam Studenic
+ *
+ */
+
 include 'functions.php';
 
 $userId = $_SESSION["user_id"];

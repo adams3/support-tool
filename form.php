@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Form generating
+ *
+ * @author Adam Studenic
+ *
+ */
+
 require_once 'header.php';
 ?>
 

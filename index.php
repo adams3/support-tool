@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Application bootstrap. Index of the whole document. Sign in form
+ *
+ * @author Adam Studenic
+ *
+ */
+
 session_start();
 if (isset($_SESSION["user_id"]) && isset($_SESSION["email"])) {
     header("location:main.php");

@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * AJAX save generated form.
+ *
+ * @author Adam Studenic
+ *
+ */
+
 include "functions.php";
 
 $json = array();

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * All functions
+ *
+ * @author Adam Studenic
+ *
+ */
+
 include "database.php";
 include "authenticate.php";
 

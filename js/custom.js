@@ -1,3 +1,11 @@
+
+/**
+ * Javascript functions for form generating, JqGrid etc.
+ *
+ * @author Adam Studenic
+ *
+ */
+
 var numberOfRows = 0;
 var lastRowNumber = 0;
 

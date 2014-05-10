@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Returns form detail in JSON.
+ *
+ * @author Adam Studenic
+ *
+ */
+
 include "functions.php";
 
 $json = "";

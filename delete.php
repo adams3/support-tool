@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Process mail/form delete request
+ *
+ * @author Adam Studenic
+ *
+ */
+
 include "functions.php";
 
 

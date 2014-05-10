@@ -1,4 +1,13 @@
 <?php
+
+
+/**
+ * Displaying all messages
+ *
+ * @author Adam Studenic
+ *
+ */
+
 require_once 'header.php';
 
 if (isset($_GET["deleted"]) && $_GET["deleted"] == "success") {

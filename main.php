@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Default template with header and footer included
+ *
+ * @author Adam Studenic
+ *
+ */
+
+
 require_once 'header.php';
 ?>
 

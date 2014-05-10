@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Header that is included to all files
+ *
+ * @author Adam Studenic
+ *
+ */
+
+
 include "functions.php";
 
 $uri = $_SERVER["REQUEST_URI"];

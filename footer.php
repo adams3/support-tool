@@ -1,4 +1,13 @@
-<?php ?>
+<?php
+
+/**
+ * Footer that is included to all files
+ *
+ * @author Adam Studenic
+ *
+ */
+
+?>
 </div>
 
 <div id="deleteConfirmation" class="modal fade">

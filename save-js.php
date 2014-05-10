@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Saving javascript config file
+ *
+ * @author Adam Studenic
+ *
+ */
+
 if ($_POST) {
 
     $jsFile = $_POST["filename"];

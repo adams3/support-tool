@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * System authentication
+ *
+ * @author Adam Studenic
+ *
+ */
+
 session_start();
 
 //Registration

@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Message reply, detail of message.
+ *
+ * @author Adam Studenic
+ *
+ */
+
 require_once 'header.php';
 
 $rowString = "";

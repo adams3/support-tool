@@ -1,5 +1,14 @@
 <?php
 
+
+/**
+ * Processing POST reply
+ *
+ * @author Adam Studenic
+ *
+ */
+
+
 include 'functions.php';
 require_once 'libs/autoload.php';
 use Mailgun\Mailgun;
